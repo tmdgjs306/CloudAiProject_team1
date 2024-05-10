@@ -1,5 +1,4 @@
 # Project
-aaaaaaaa
 동물 품종 맞춤 정보 제공 홈페이지 
 - 구현기능
    - 품종 구분
@@ -15,5 +14,4 @@ aaaaaaaa
  - Front_End
    - html
    - Thymeleaf
-   
- 
+  
