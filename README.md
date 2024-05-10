@@ -16,3 +16,5 @@ aaaaaaaa
    - React Native
    - Thymeleaf
    
+
+Git 빡세다
