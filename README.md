@@ -13,6 +13,7 @@ aaaaaaaa
    - MySql
     
  - Front_End
-   - React Native
+   - html
    - Thymeleaf
    
+ 
