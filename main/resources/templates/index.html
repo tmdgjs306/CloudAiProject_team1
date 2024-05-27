@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns: th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .Header{
+            text-align: center;
+        }
+        p{
+            font-size: small;
+        }
+        .submitBtn{
+            background-color: greenyellow;
+            color: black;
+            font-size: 16px;
+            border: none;
+            padding: 15px 30px;
+            margin: 2px 1px;
+            display: inline-block;
+        }
+        .Body{
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="Header">
+    <h1>부멍님이 누구니?</h1>
+    <p style="color: gray">당신의 강아지 사진을 올려주세요</p>
+</div>
+<div class="Body">
+    <form action="upload/S3_image" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit" class="submitBtn">제출</button>
+    </form>
+    <img th:src="${filePath}">
+</div>
+</body>
+</html>
