@@ -13,6 +13,10 @@
 # IntelliJ Files
 *.properties
 
+# Server 
+*.jpg
+*.png
+
 # Package Files #
 *.jar
 *.war
