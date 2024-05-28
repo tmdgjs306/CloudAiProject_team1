@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 화면</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            display: flex;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #e0e0e0;
+            border-radius: 15px; /* 전체 컨테이너 둥글게 */
+            overflow: hidden; /* 둥근 모서리가 자식 요소에도 적용되도록 */
+        }
+        .login-image {
+            background-color: #a0e0a0;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-image img {
+            width: 150px;
+            height: auto;
+            border-radius: 15px; /* 이미지 둥글게 */
+            transition: transform 0.5s ease-in-out; /* 이미지 변환 애니메이션 */
+        }
+        .login-image .title {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+        }
+        .login-form {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .login-form label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .login-form input {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px; /* 입력 필드 둥글게 */
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .rotated {
+            transform: rotateY(180deg); /* 180도 회전 효과 */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const image = document.querySelector('.login-image img');
+            const originalSrc = 'src\main\resources\static\img\강아.png';
+            const newSrc = '..\static\img\고양.png'; // 고양이 이미지 경로
+
+            if (image) {
+                image.onmouseenter = function() {
+                    image.classList.add('rotated');
+                    setTimeout(() => {
+                        image.src = newSrc;
+                    }, 250); // 180도 회전의 절반인 0.25초 후 이미지 변경
+                };
+
+                image.onmouseleave = function() {
+                    image.classList.remove('rotated');
+                    setTimeout(() => {
+                        image.src = originalSrc;
+                    }, 250); // 180도 회전의 절반인 0.25초 후 이미지 변경
+                };
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-image">
+            <img src="C:\Users\SNNNY\Desktop\jun\mung\src\main\resources\static\img\강아.png" alt="견증박과">
+            <div class="title">견종백과</div>
+        </div>
+        <div class="login-form">
+            <input type="text" placeholder="ID :" id="id" name="id">
+            <input type="password" placeholder="PW :" id="pw" name="pw">
+        </div>
+    </div>
+</body>
+</html>
