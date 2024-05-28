@@ -13,8 +13,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping("/upload")
 public class imageLocalUploadController {
-    /*
-    *  저자: 한승헌
+    /**  저자: 한승헌
     *  용도: 로걸환경 테스트
     *  #배포시 제거
     * */
@@ -28,10 +27,11 @@ public class imageLocalUploadController {
         file.transferTo(new File(fileDir + Integer.toString(imageId)+file.getOriginalFilename()));
         String filePath = "localhost:8080/resources/image/"+Integer.toString(imageId)+file.getOriginalFilename();
         imageId++;
+
         model.addAttribute("filePath",filePath);
         //다시 MainPage로 리다이렉트
-
         return "index";
     }
+
 
 }

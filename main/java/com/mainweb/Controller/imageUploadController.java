@@ -2,7 +2,9 @@ package com.mainweb.Controller;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.mainweb.DTO.classificationData;
 import com.mainweb.Service.S3UploadService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -16,9 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/*
- * 저자: 한승헌
+/** 저자: 한승헌
  * 기능: AWS S3에 이미지 업로드
  *
  * */
@@ -29,16 +32,32 @@ import java.io.IOException;
 public class imageUploadController {
 
     private final S3UploadService s3UploadService;
-
+    private final List<classificationData> list;
     @PostMapping("/S3_image")
     public String uploadFile(Model model, @RequestParam("file")MultipartFile file){
         String fileUrl = "";
-        try {
+        String staticFileUrl = "https://cloudeai.s3.ap-northeast-2.amazonaws.com/185d3f1a-82eb-4ba3-ad90-f4aff613bc12";
+        /*try {
             fileUrl = s3UploadService.uploadImageToS3(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        model.addAttribute("filePath", fileUrl);
+        model.addAttribute("filePath", fileUrl);*/
+        model.addAttribute("filePath",staticFileUrl);
+
+        // AI 서버로 부터 판독 결과 불러옴
+        // AI 서버 구현 후 변경 예정
+        // 현재는 VIew Test를 위해 고정된 값을 넣어 리턴함
+        // 현재는 Controller에 구현되어 있으나, 나중에 Service 단으로 이동예정
+
+        for(int i=0; i<3; i++){
+            int temp = (int)(Math.random() * 100);
+            classificationData testData = new classificationData("name1" , temp);
+            System.out.println(temp);
+            list.add(testData);
+        }
+        model.addAttribute("classificationData",list);
+
         return "index";
     }
 }

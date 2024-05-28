@@ -42,7 +42,6 @@ public class S3UploadService {
     * 한글 파일명 꺠짐 ->  파일명 변경 필요 -> 해결
     * 최종 수정일 : 2024.05.27
     */
-
     public String uploadImageToS3(MultipartFile file) throws IOException {
         try {
 
@@ -50,10 +49,12 @@ public class S3UploadService {
             String fileName= String.valueOf(UUID.randomUUID());
             // AWS 내에 저장된 객체의 주소
             String fileUrl= "https://cloudeai.s3.ap-northeast-2.amazonaws.com/"+fileName;
+
             //파일에 대한 메타 데이터 생성
             ObjectMetadata metadata= new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
+
             //파일 업로드
             amazonS3Client.putObject(bucket,fileName,file.getInputStream(),metadata);
             //성공 결과 출력 [테스트 기능, 추후 제거]
