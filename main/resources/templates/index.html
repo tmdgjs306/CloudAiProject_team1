@@ -17,47 +17,7 @@
         <input type="file" name="file">
         <button type="submit" class="submitBtn">제출</button>
     </form>
-    <img id="myDog" th:src="${filePath}">
-
-    <canvas id="myChart" style="align-content: center" width="70" height="30"></canvas>
 </div>
 
 </body>
-<script th:inline="javascript">
-    let classificationArray = [[${classificationData}]]; // 배열에 개체 분류 정보
-    let myCt = document.getElementById("myChart"); // 차트 생성
-    let names = []; // 강아지 분류 정보 저장
-    let values = []; // 강아지 비율 정보 저장
-
-    /** ※ 임시 구현 사항
-    * names, values 배열에 강아지 분류 정보. 비율 정보 저장
-    * 추후 더 좋은 로직이 생각나면 변경 예정
-    * */
-    for(let i=0; i<3; i++) {
-        names.push(classificationArray[i].name);
-        values.push(classificationArray[i].value);
-    }
-
-    /** JSChart 라이브러리를 이용하여 차트를 그리는 함수
-     * type : 차트 형태 지정
-     * data : 차트에 넣을 데이터 입력
-     * option : 차트 모양 세로 | 가로 지정
-    * */
-    let myChart = new Chart(myCt, {
-        type : 'bar',
-        data : {
-            labels: names,
-            datasets:[
-                {
-                    label: '당신의 반려견의 비율!',
-                    data: values,
-                    backgroundColor : '#24DB00'
-                }
-            ]
-        },
-        options:{
-            indexAxis: 'y',
-        }
-    });
-</script>
 </html>

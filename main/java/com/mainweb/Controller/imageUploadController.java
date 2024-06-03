@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.mainweb.DTO.classificationData;
 import com.mainweb.Service.S3UploadService;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -32,9 +33,9 @@ import java.util.List;
 public class imageUploadController {
 
     private final S3UploadService s3UploadService;
-    private final List<classificationData> list;
+    private List<classificationData> list;
     @PostMapping("/S3_image")
-    public String uploadFile(Model model, @RequestParam("file")MultipartFile file){
+    public void uploadFile(HttpServletResponse response, Model model, @RequestParam("file")MultipartFile file) throws IOException {
         String fileUrl = "";
         String staticFileUrl = "https://cloudeai.s3.ap-northeast-2.amazonaws.com/185d3f1a-82eb-4ba3-ad90-f4aff613bc12";
         /*try {
@@ -49,15 +50,7 @@ public class imageUploadController {
         // AI 서버 구현 후 변경 예정
         // 현재는 VIew Test를 위해 고정된 값을 넣어 리턴함
         // 현재는 Controller에 구현되어 있으나, 나중에 Service 단으로 이동예정
-
-        for(int i=0; i<3; i++){
-            int temp = (int)(Math.random() * 100);
-            classificationData testData = new classificationData("name1" , temp);
-            System.out.println(temp);
-            list.add(testData);
-        }
-        model.addAttribute("classificationData",list);
-
-        return "index";
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.sendRedirect("/result");
     }
 }
