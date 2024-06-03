@@ -1,14 +1,13 @@
 package com.mainweb.Controller;
 
 import com.mainweb.DTO.classificationData;
-import com.mainweb.Service.GetAiDataService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.mainweb.API.GetAiDataAPI;
+import jakarta.servlet.ServletException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -20,18 +19,26 @@ import java.util.List;
  * */
 @Controller
 @RequiredArgsConstructor
+@Log4j2
 public class mainPageController {
     private List<classificationData> list;
-    private final GetAiDataService getAiDataService;
+    private final GetAiDataAPI getAiDataService;
     @GetMapping("/result")
-    public String getResult(HttpServletResponse response, HttpServletRequest request, Model model){
+    public String getResult(Model model) throws ServletException {
+
+        // S3에 저장된 파일의 ID를 불러온다.
+        String fileUrl = model.getAttribute("fileId").toString();
+        log.info("[File Url] : "+fileUrl);
+        model.addAttribute("filePath",fileUrl);
 
         // AI 서버로 부터 판독 결과 불러옴
-        String fileUrl = model.getAttribute("fileId").toString();
-        System.out.println("[File Url:]: "+fileUrl);
-
-        list = getAiDataService.getData(fileUrl);
-        model.addAttribute("classificationData",list);
+        try {
+            list = getAiDataService.getData(fileUrl);
+            model.addAttribute("classificationData", list);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            throw new ServletException("Fail to Fetch Data From AI Server!");
+        }
 
         //result Page로 리다이렉트
         return "result";

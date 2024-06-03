@@ -40,6 +40,8 @@ public class imageUploadController {
     public String uploadFile(RedirectAttributes redirectAttributes,HttpServletResponse response, Model model, @RequestParam("file")MultipartFile file) throws IOException {
         String fileUrl = "";
         String staticFileUrl = "https://cloudeai.s3.ap-northeast-2.amazonaws.com/185d3f1a-82eb-4ba3-ad90-f4aff613bc12";
+
+        // 이미지 서버에 파일 업로드
         /*try {
             fileUrl = s3UploadService.uploadImageToS3(file);
         } catch (IOException e) {
@@ -48,7 +50,7 @@ public class imageUploadController {
         model.addAttribute("filePath", fileUrl);*/
         //model.addAttribute("filePath",staticFileUrl);
 
-        // Result Page로 이동
+        // Result Page로 이동 (Result Page에 fileId 값으로 경로 전달)
         redirectAttributes.addFlashAttribute("fileId",staticFileUrl);
         return "redirect:/result";
     }

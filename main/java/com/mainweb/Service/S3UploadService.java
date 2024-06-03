@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ import java.util.UUID;
 * */
 @Component
 @Slf4j
+@Log4j2
 public class S3UploadService {
 
     @Autowired
@@ -57,8 +59,8 @@ public class S3UploadService {
 
             //파일 업로드
             amazonS3Client.putObject(bucket,fileName,file.getInputStream(),metadata);
-            //성공 결과 출력 [테스트 기능, 추후 제거]
-            System.out.println("[File Upload] : Success!"+"\n"+"url: "+fileUrl);
+
+            log.info("[File Upload] : Success!\"+\"\\n\"+\"url: \"+fileUrl");
             // 주소 반환
             return fileUrl;
 
