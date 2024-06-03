@@ -3,6 +3,8 @@ package com.mainweb.Controller;
 import com.mainweb.DTO.classificationData;
 import com.mainweb.API.GetAiDataAPI;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -42,5 +44,10 @@ public class mainPageController {
 
         //result Page로 리다이렉트
         return "result";
+    }
+
+    @GetMapping("/main")
+    public String getMain(HttpServletRequest request, HttpServletResponse response){
+        return "main";
     }
 }

@@ -51,6 +51,7 @@ public class imageUploadController {
         //model.addAttribute("filePath",staticFileUrl);
 
         // Result Page로 이동 (Result Page에 fileId 값으로 경로 전달)
+
         redirectAttributes.addFlashAttribute("fileId",staticFileUrl);
         return "redirect:/result";
     }

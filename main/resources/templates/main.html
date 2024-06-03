@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns: th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>부멍님이 누구니?</title>
+    <link rel="stylesheet" th:href="@{/CSS/sample.css}"/>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="Header">
+    <h1>부멍님이 누구니?</h1>
+    <p style="color: gray">당신의 강아지 사진을 올려주세요</p>
+</div>
+<div class="Body">
+    <form action="upload/S3_image" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <button type="submit" class="submitBtn">제출</button>
+    </form>
+</div>
+
+</body>
+</html>
