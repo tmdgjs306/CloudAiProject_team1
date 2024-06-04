@@ -13,22 +13,31 @@
         <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="/CSS/Index.css" rel="stylesheet" />
+        <link rel="stylesheet" th:href="@{/CSS/bootstrap.css}"/>
+        <!-- bootStrap Core-->
+        <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
+
     <body id="page-top">
-        <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-            <div class="container px-5">
-                <a class="navbar-brand" href="#page-top">부멍님이 누구니?</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="/sign">Sign Up</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+
+        <!-- Head-->
+        <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+                    <span class="fs-4">부멍님이 누구니?</span>
+                </a>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">홈페이지</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">게시판</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">로그인</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">회원가입</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">정보</a></li>
+                </ul>
+            </header>
+        </div>
+
         <!-- Header-->
         <header class="masthead text-center text-white">
             <div class="masthead-content">
@@ -41,7 +50,7 @@
         </header>
 
         <!-- Content section 1-->
-        <section id="scroll">
+        <section>
             <div class="container px-5">
                 <div class="row gx-5 align-items-center">
                     <div class="col-lg-6 order-lg-2">
@@ -89,8 +98,8 @@
             </div>
         </section>
         <!-- Footer-->
-        <footer class="py-5 bg-black">
-            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; 부멍님이 누구니? 2024</p></div>
+        <footer class="py-5" id="footer" style="background-color: dodgerblue">
+            <div class="container px-5"><p class="m-0 text-center small" style="color:white">Copyright &copy; 부멍님이 누구니? 2024</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
