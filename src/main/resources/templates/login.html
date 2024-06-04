@@ -66,11 +66,12 @@
             transform: rotateY(180deg); /* 180도 회전 효과 */
         }
     </style>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const image = document.querySelector('.login-image img');
-            const originalSrc = 'src\main\resources\static\img\강아.png';
-            const newSrc = '..\static\img\고양.png'; // 고양이 이미지 경로
+            const originalSrc = '../static/img/강아.png';
+            const newSrc = '../static/img/고양.png'; // 고양이 이미지 경로
 
             if (image) {
                 image.onmouseenter = function() {
@@ -93,12 +94,12 @@
 <body>
     <div class="login-container">
         <div class="login-image">
-            <img src="C:\Users\SNNNY\Desktop\jun\mung\src\main\resources\static\img\강아.png" alt="견증박과">
-            <div class="title">견종백과</div>
+            <img src="../static/img/강아.png" alt="견종박과">
+            <div class="title">부멍님</div>
         </div>
         <div class="login-form">
-            <input type="text" placeholder="ID :" id="id" name="id">
-            <input type="password" placeholder="PW :" id="pw" name="pw">
+            <input type="text" placeholder="ID :" id="id">
+            <input type="password" placeholder="PW :" id="pw">
         </div>
     </div>
 </body>
