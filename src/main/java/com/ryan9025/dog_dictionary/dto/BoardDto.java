@@ -4,8 +4,7 @@ import com.ryan9025.dog_dictionary.entity.Board;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

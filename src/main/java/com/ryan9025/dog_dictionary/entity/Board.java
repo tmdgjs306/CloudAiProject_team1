@@ -9,12 +9,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Getter
-@Setter
+@Data // @Getter, @Setter, @RequiredArgsConstructor,
+      // @ToString, @EqualsAndHashCode 를 한번에 설정해주는 어노테이션
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @EntityListeners(AuditingEntityListener.class) // 자동으로 날짜를 생성
 @Table(name = "Board")
 public class Board {
@@ -24,9 +24,10 @@ public class Board {
 
     private String image;
     private String content;
+
     @CreatedDate
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    private LocalDateTime modifyDate;
+    private LocalDateTime modifiedDate;
 }
