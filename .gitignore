@@ -9,8 +9,24 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
+# InteliJ Files
+*.yml
+gradlew
+gradlew.bat
+package-lock.json
+package.json
+settings.gradle
+LICENSE
+
+
+# InteliJ Files
+*.gradle
+*.properties
 
 # Package Files #
+build
+.gradle
+.idea
 *.jar
 *.war
 *.nar
