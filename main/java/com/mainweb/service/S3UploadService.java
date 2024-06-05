@@ -1,23 +1,15 @@
-package com.mainweb.Service;
+package com.mainweb.service;
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 /*
@@ -44,13 +36,17 @@ public class S3UploadService {
     private AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
+    @Value("${cloud.aws.website.address}")
+    private String awsAddress;
+
     public String uploadImageToS3(MultipartFile file) throws IOException {
         try {
 
             // 파일명이 한글인 이미지 파일 업로드 시 문제 발생 -> 랜덤으로 파일명 새로 생성
             String fileName= String.valueOf(UUID.randomUUID());
             // AWS 내에 저장된 객체의 주소
-            String fileUrl= "https://cloud-aiserver-project1-1.s3.ap-northeast-2.amazonaws.com/"+fileName;
+            String fileUrl= awsAddress+fileName;
 
             //파일에 대한 메타 데이터 생성
             ObjectMetadata metadata= new ObjectMetadata();

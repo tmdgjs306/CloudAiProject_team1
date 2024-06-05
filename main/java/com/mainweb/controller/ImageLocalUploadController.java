@@ -1,4 +1,4 @@
-package com.mainweb.Controller;
+package com.mainweb.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import java.io.IOException;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/upload")
-public class imageLocalUploadController {
+public class ImageLocalUploadController {
     /**  저자: 한승헌
     *  용도: 로걸환경 테스트
     *  #배포시 제거

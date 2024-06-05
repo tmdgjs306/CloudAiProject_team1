@@ -1,6 +1,6 @@
-package com.mainweb.Service;
+package com.mainweb.service;
 
-import com.mainweb.DTO.BoardDto;
+import com.mainweb.dto.BoardDto;
 import com.mainweb.entity.Board;
 import com.mainweb.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;

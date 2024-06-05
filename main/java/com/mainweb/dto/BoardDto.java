@@ -1,4 +1,4 @@
-package com.mainweb.DTO;
+package com.mainweb.dto;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
