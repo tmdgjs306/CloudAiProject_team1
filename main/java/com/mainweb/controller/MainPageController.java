@@ -1,7 +1,7 @@
-package com.mainweb.Controller;
+package com.mainweb.controller;
 
-import com.mainweb.DTO.classificationData;
-import com.mainweb.API.GetAiDataAPI;
+import com.mainweb.dto.ClassificationData;
+import com.mainweb.api.GetAiDataApi;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +22,9 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Log4j2
-public class mainPageController {
-    private List<classificationData> list;
-    private final GetAiDataAPI getAiDataService;
+public class MainPageController {
+    private List<ClassificationData> list;
+    private final GetAiDataApi getAiDataService;
     @GetMapping("/result")
     public String getResult(Model model) throws ServletException {
 

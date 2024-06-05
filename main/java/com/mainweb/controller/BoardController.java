@@ -1,7 +1,7 @@
-package com.mainweb.Controller;
+package com.mainweb.controller;
 
-import com.mainweb.DTO.BoardDto;
-import com.mainweb.Service.BoardService;
+import com.mainweb.dto.BoardDto;
+import com.mainweb.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

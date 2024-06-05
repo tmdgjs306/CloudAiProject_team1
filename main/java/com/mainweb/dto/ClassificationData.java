@@ -1,4 +1,4 @@
-package com.mainweb.DTO;
+package com.mainweb.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class classificationData {
+public class ClassificationData {
     private String name;
     private int value;
 }

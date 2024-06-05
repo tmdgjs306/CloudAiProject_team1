@@ -1,7 +1,7 @@
-package com.mainweb.Controller;
+package com.mainweb.controller;
 
-import com.mainweb.DTO.classificationData;
-import com.mainweb.Service.S3UploadService;
+import com.mainweb.dto.ClassificationData;
+import com.mainweb.service.S3UploadService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /** 저자: 한승헌
@@ -25,10 +24,10 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/upload")
-public class imageUploadController {
+public class ImageUploadController {
 
     private final S3UploadService s3UploadService;
-    private List<classificationData> list;
+    private List<ClassificationData> list;
     @PostMapping("/S3_image")
     public String uploadFile(RedirectAttributes redirectAttributes,HttpServletResponse response, Model model, @RequestParam("file")MultipartFile file) throws IOException {
         String fileUrl = "";
