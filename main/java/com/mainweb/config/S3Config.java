@@ -1,4 +1,4 @@
-package com.mainweb;
+package com.mainweb.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

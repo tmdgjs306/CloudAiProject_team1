@@ -31,26 +31,26 @@ import java.util.UUID;
 @Log4j2
 public class S3UploadService {
 
+    /*
+     * 함수 기능: S3에 이미지 업로드
+     * 로직:  S3에 이미지 업로드 -> 주소 반환
+     * 매개변수: multipartFile : 사용자로 부터 입력받은 파일
+     *
+     * 한글 파일명 꺠짐 ->  파일명 변경 필요 -> 해결
+     * 최종 수정일 : 2024.05.27
+     */
+
     @Autowired
     private AmazonS3Client amazonS3Client;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-
-    /*
-    * 함수 기능: S3에 이미지 업로드
-    * 로직:  S3에 이미지 업로드 -> 주소 반환
-    * 매개변수: multipartFile : 사용자로 부터 입력받은 파일
-    *
-    * 한글 파일명 꺠짐 ->  파일명 변경 필요 -> 해결
-    * 최종 수정일 : 2024.05.27
-    */
     public String uploadImageToS3(MultipartFile file) throws IOException {
         try {
 
             // 파일명이 한글인 이미지 파일 업로드 시 문제 발생 -> 랜덤으로 파일명 새로 생성
             String fileName= String.valueOf(UUID.randomUUID());
             // AWS 내에 저장된 객체의 주소
-            String fileUrl= "https://cloudeai.s3.ap-northeast-2.amazonaws.com/"+fileName;
+            String fileUrl= "https://cloud-aiserver-project1-1.s3.ap-northeast-2.amazonaws.com/"+fileName;
 
             //파일에 대한 메타 데이터 생성
             ObjectMetadata metadata= new ObjectMetadata();

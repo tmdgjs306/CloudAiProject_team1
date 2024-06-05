@@ -43,11 +43,11 @@ public class mainPageController {
         }
 
         //result Page로 리다이렉트
-        return "result";
+        return "/main/result";
     }
 
     @GetMapping("/main")
     public String getMain(HttpServletRequest request, HttpServletResponse response){
-        return "main";
+        return "/main/main";
     }
 }
