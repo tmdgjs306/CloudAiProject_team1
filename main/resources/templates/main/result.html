@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns: th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>부멍님이 누구니?</title>
+    <link rel="stylesheet" th:href="@{/CSS/main.css}"/>
+
+    <!-- bootstrap Core-->
+    <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/CSS/bootstrap2.css}"/>
+
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <style>
+        #rollback-btn{
+            border-color: dodgerblue;
+            background-color: dodgerblue
+        }
+        #myDog{
+            width: 50%;
+            height: 30%;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- Header-->
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="/static" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+            <span class="fs-4">부멍님이 누구니?</span>
+        </a>
+
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">홈페이지</a></li>
+            <li class="nav-item"><a href="/board/feed" class="nav-link">게시판</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">로그인</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">회원가입</a></li>
+            <li class="nav-item"><a href="#" class="nav-link">정보</a></li>
+        </ul>
+    </header>
+</div>
+
+<!-- ContentBody-->
+<!-- 나중에 서버에서 양육정보 받아오게 변경-->
+<div id="wrapper">
+<div class="Body">
+    <img id="myDog" th:src="${filePath}">
+    <div>
+        <br>
+        <h5>웃는 모습이 보기 좋은 달마시안!</h5>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    </div>
+    <canvas id="myChart" style="align-content: center" width="70" height="30"></canvas>
+    <a class="btn btn-primary" id="rollback-btn"  href="/main" role="button">다시하기</a>
+</div>
+</div>
+<!-- Footer-->
+<footer class="py-4"  id=footer style="background-color: dodgerblue">
+    <div class="container px-4"><p class="m-0 text-center small" style="color:white">Copyright &copy; 부멍님이 누구니? 2024</p></div>
+</footer>
+
+</body>
+
+<script th:inline="javascript">
+
+    let classificationArray = [[${classificationData}]]; // 배열에 개체 분류 정보
+    let myCt = document.getElementById("myChart"); // 차트 생성
+    let names = []; // 강아지 분류 정보 저장
+    let values = []; // 강아지 비율 정보 저장
+
+    /** ※ 임시 구현 사항
+    * names, values 배열에 강아지 분류 정보. 비율 정보 저장
+    * 추후 더 좋은 로직이 생각나면 변경 예정
+    * */
+    for(let i=0; i<classificationArray.length; i++) {
+        names.push(classificationArray[i].name);
+        values.push(classificationArray[i].value);
+    }
+
+    /** Chart.JS 라이브러리를 이용하여 차트를 그리는 함수
+     * type : 차트 형태 지정
+     * data : 차트에 넣을 데이터 입력
+     * option : 차트 모양 세로 | 가로 지정
+    * */
+
+    let myChart = new Chart(myCt, {
+        type : 'bar',
+        data : {
+            labels: names,
+            datasets:[
+                {
+                    label: '비율',
+                    data: values,
+                    backgroundColor : 'dodgerblue'
+                }
+            ]
+        },
+        options:{
+            indexAxis: 'y',
+        }
+    });
+</script>
+</html>
