@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
     @GetMapping("/login")
     public String login(@RequestParam(value = "error",required = false) String error, // error 메세지
