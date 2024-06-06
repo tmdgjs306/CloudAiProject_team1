@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<div layout:fragment="content" class="main">
+    <div class="container d-flex justify-content-center">
+        <div class="col-auto">
+            <h2 class="uploadTitle">내 강아지 자랑하기</h2>
+            <form th:action="@{/board/upload}" method="post" th:object="${boardDto}" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <div class="uploadImage mb-3">
+                        <label for="file" class="form-label"></label>
+                        <input class="form-control" type="file" id="file" name="file" accept="image/*">
+                        <!-- accept 속성은 사용자가 파일을 선택할 수 있는 타입을 지정하는 속성이다. -->
+                    </div>
+                    <div class="mt-3 mb-3">
+                        <label for="content">
+                            <textarea class="form-control" id="content" rows="5" name="content" th:field="*{content}"></textarea>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-5 d-grid">
+                    <button class="btn btn-dark" id="btnUpload">업로드</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded',function () {
+            const imageInput = document.getElementById('file');
+
+            imageInput.addEventListener('change', function () {
+                const parent = this.closest('.uploadImage');
+                const selectedFile = this.files[0];
+
+                // 기존에 표시된 이미지 미리보기가 있으면 제거
+                const existingPreview = parent.querySelector('.previewImage');
+                if (existingPreview) {
+                    parent.removeChild(existingPreview);
+                }
+                if (selectedFile && selectedFile.type.match('image.*')) {
+                    const fileReader = new FileReader();
+
+                    fileReader.onload = function (e) {
+                        // 파일 읽기 성공 시, 이미지 미리보기 생성 및 표시
+                        const src = e.target.result;
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'previewImage';
+
+                        const img = document.createElement('img');
+                        img.src = src;
+                        img.style.margin = '10px 10px'
+                        img.className = 'previewThumb';
+                        img.style.width = 'auto';
+                        img.style.height = 'auto';
+
+                        previewDiv.appendChild(img);
+                        parent.appendChild(previewDiv); // 미리보기 이미지를 .uploadImage 내부에 추가
+                    };
+                    fileReader.readAsDataURL(selectedFile); // 선택된 파일을 DataURL 로 읽어들임
+                } else {
+                    alert("이미지 파일만 업로드 할 수 있습니다.");
+                    return false;
+                }
+            });
+        });
+        function notice () {
+            alert("피드가 업데이트 되었습니다.");
+        }
+        const uploadBtn = document.getElementById('btnUpload');
+        uploadBtn.addEventListener("click",notice);
+
+        ClassicEditor
+            .create( document.querySelector( '#content' ), {
+                ckfinder : {
+                    uploadUrl : "/board/upload"
+                }
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+</div>
+</html>

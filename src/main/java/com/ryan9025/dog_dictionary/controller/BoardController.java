@@ -1,9 +1,11 @@
 package com.ryan9025.dog_dictionary.controller;
 
 import com.ryan9025.dog_dictionary.dto.BoardDto;
+import com.ryan9025.dog_dictionary.dto.CustomUserDetails;
 import com.ryan9025.dog_dictionary.entity.Board;
 import com.ryan9025.dog_dictionary.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +29,8 @@ public class BoardController {
         return "/board/upload";
     }
     @PostMapping("/upload")
-    public String uploadProcess(@RequestParam("image") MultipartFile file, @ModelAttribute BoardDto boardDto, Model model) throws IOException {
-        boardService.write(boardDto);
-        boardService.upload(file);
+    public String uploadProcess(BoardDto boardDto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        boardService.upload(boardDto,customUserDetails);
         return "/board/feed";
     }
     @GetMapping("/temp")

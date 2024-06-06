@@ -1,5 +1,6 @@
 package com.ryan9025.dog_dictionary.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,8 +23,13 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String image;
     private String content;
+    private String imageUrl;
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JsonIgnoreProperties({"imageList"})
+    private User user;
 
     @CreatedDate
     private LocalDateTime createdDate;

@@ -1,15 +1,14 @@
 package com.ryan9025.dog_dictionary.service;
 
 import com.ryan9025.dog_dictionary.dto.BoardDto;
+import com.ryan9025.dog_dictionary.dto.CustomUserDetails;
 import com.ryan9025.dog_dictionary.entity.Board;
 import com.ryan9025.dog_dictionary.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,30 +20,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
-    @Value("{file.path}")
+    // 이미지가 저장되는 로컬 경로
+    @Value("${file.path}")
     private String uploadFolder;
-    public void write(BoardDto boardDto) {
-        Board dbWriteBoard = Board.builder()
-                .content(boardDto.getContent())
-                .build();
-        log.info("db == {}" , boardDto.getContent());
-        boardRepository.save(dbWriteBoard);
-    }
-    public void upload(MultipartFile multipartFile) throws IOException {
-        String originalFileName = multipartFile.getOriginalFilename();
-        if (originalFileName == null || originalFileName.isEmpty()) {
-            throw new IOException("유효하지 않은 파일 이름입니다.");
+
+    public void upload(BoardDto boardDto, CustomUserDetails customUserDetails) {
+        String originalFileName = boardDto.getFile().getOriginalFilename();
+        // 이미지 이름 중복 방지를 위해 UUID 생성해서 파일명에 추가하는 코드
+        UUID uuid =UUID.randomUUID();
+        String imageFileName = uuid + "_" + originalFileName;
+
+        Path imageFilePath = Paths.get(uploadFolder + imageFileName);
+
+        try {
+            Files.write(imageFilePath,boardDto.getFile().getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+        Board board = boardDto.toEntity(imageFileName,customUserDetails.getLoggedMember());
+        boardRepository.save(board);
 
-        UUID convertedId = UUID.randomUUID();
-        String imageFileName = convertedId + "_" + originalFileName;
-        Path imageFilePath = Paths.get(uploadFolder, imageFileName);
-
-        // 파일을 지정된 위치로 전송
-        multipartFile.transferTo(imageFilePath.toFile());
-
-        // 파일 업로드 경로를 로그로 출력
-        System.out.println("파일이 업로드되었습니다: " + imageFilePath.toString());
 
     }
 }
