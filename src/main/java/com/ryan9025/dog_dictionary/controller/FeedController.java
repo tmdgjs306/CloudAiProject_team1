@@ -35,7 +35,7 @@ public class FeedController {
     @GetMapping("/singleFeed/{id}")
     public String singleFeed(@PathVariable Long id, Model model) {
         Feed getFeedInfo = feedService.loadSingleFeed(id);
-        log.info("getFeedInfo =={}", getFeedInfo.toString());
+        // log.info("getFeedInfo =={}", getFeedInfo.toString());
         model.addAttribute("getFeedInfo", getFeedInfo);
         return "/feed/singleFeed";
     }

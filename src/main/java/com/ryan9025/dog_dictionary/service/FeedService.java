@@ -43,7 +43,7 @@ public class FeedService {
     }
     public Feed loadSingleFeed(Long id) {
         Feed feedInfo = feedRepository.findById(id).orElseThrow();
-        log.info("boardInfo=={}", feedInfo);
+        log.info("feedInfo=={}", feedInfo);
         return feedInfo;
     }
 }
