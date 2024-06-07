@@ -1,9 +1,33 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인 화면</title>
+    <title>회원가입</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const duplicateCheck = document.getElementById('check');
+            if (duplicateCheck) {
+                duplicateCheck.onmouseenter = function() {
+                    console.log("마우스 올라감");
+                    duplicateCheck.style.backgroundColor = '#a83248';
+                };
+                duplicateCheck.onmouseleave = function() {
+                    duplicateCheck.style.backgroundColor = '#4CAF50';
+                };
+            }
+
+            const dogImage = document.getElementById('dogImage');
+            if (dogImage) {
+                dogImage.onmouseenter = function() {
+                    dogImage.classList.add('sparkle-effect');
+                };
+                dogImage.onmouseleave = function() {
+                    dogImage.classList.remove('sparkle-effect');
+                };
+            }
+        });
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,93 +38,147 @@
             height: 100vh;
             margin: 0;
         }
-        .login-container {
+        .signup-container {
             display: flex;
+            flex-direction: column;
             border: 2px solid #ccc;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             background-color: #e0e0e0;
             border-radius: 15px; /* 전체 컨테이너 둥글게 */
             overflow: hidden; /* 둥근 모서리가 자식 요소에도 적용되도록 */
+            width: 400px;
         }
-        .login-image {
+        .signup-header {
             background-color: #a0e0a0;
             padding: 20px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
-        .login-image img {
-            width: 150px;
+        .signup-header img {
+            width: 100px;
             height: auto;
             border-radius: 15px; /* 이미지 둥글게 */
-            transition: transform 0.5s ease-in-out; /* 이미지 변환 애니메이션 */
+            transition: filter 0.5s ease-in-out; /* 이미지 변환 애니메이션 */
         }
-        .login-image .title {
+        .signup-header .title {
             font-size: 24px;
-            color: #333;
+            color: #ffd700;
             margin-top: 10px;
         }
-        .login-form {
-            padding: 40px;
+        .signup-form {
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center; /* 수평 가운데 정렬 */
         }
-        .login-form label {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .login-form input {
-            padding: 10px;
+        .signup-form .input-group {
+            display: flex;
+            align-items: center;
+            width: 100%;
             margin-bottom: 20px;
+        }
+        .signup-form .input-group input {
+            flex: 1;
+            height: 40px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 10px; /* 입력 필드 둥글게 */
+            border-radius: 10px; /* 전체적으로 둥글게 */
             font-size: 14px;
-            width: 200px;
+            box-sizing: border-box;
+        }
+        .signup-form .input-group button {
+            height: 40px;
+            padding: 0 15px;
+            border: none;
+            border-radius: 10px; /* 전체적으로 둥글게 */
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: 10px; /* 버튼과 입력 필드 사이의 간격 */
+        }
+        .signup-form .input-item {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .signup-form .input-item input {
+            width: 100%;
+            height: 40px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
         }
 
-        .rotated {
-            transform: rotateY(180deg); /* 180도 회전 효과 */
+        @keyframes sparkle {
+            0% {
+                filter: brightness(100%);
+            }
+            50% {
+                filter: brightness(150%);
+            }
+            100% {
+                filter: brightness(100%);
+            }
+        }
+
+        .sparkle-effect {
+            animation: sparkle 0.5s infinite;
         }
     </style>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const image = document.querySelector('.login-image img');
-            const originalSrc = '../static/img/강아.png';
-            const newSrc = '../static/img/고양.png'; // 고양이 이미지 경로
-
-            if (image) {
-                image.onmouseenter = function() {
-                    image.classList.add('rotated');
-                    setTimeout(() => {
-                        image.src = newSrc;
-                    }, 250); // 180도 회전의 절반인 0.25초 후 이미지 변경
-                };
-
-                image.onmouseleave = function() {
-                    image.classList.remove('rotated');
-                    setTimeout(() => {
-                        image.src = originalSrc;
-                    }, 250); // 180도 회전의 절반인 0.25초 후 이미지 변경
-                };
-            }
-        });
-    </script>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-image">
-            <img src="../static/img/강아.png" alt="견종박과">
-            <div class="title">부멍님</div>
+    <div class="signup-container">
+        <div class="signup-header">
+            <img src="img/로그인 강아지.png" alt="견증박과" id="dogImage">
+            <div class="title">회원가입</div>
         </div>
-        <div class="login-form">
-            <input type="text" placeholder="ID :" id="id">
-            <input type="password" placeholder="PW :" id="pw">
+        <div class="signup-form">
+            <div class="input-group">
+                <input type="text" id="id" name="id" placeholder="아이디">
+                <button type="button" id="check">중복체크</button>
+            </div>
+            <div class="input-item">
+                <input type="password" id="pw" name="pw" placeholder="비밀번호">
+            </div>
+            <div class="input-item">
+                <input type="password" id="pw-confirm" name="pw-confirm" placeholder="비밀번호 확인">
+            </div>
+            <div class="input-item">
+                <input type="text" id="nickname" name="nickname" placeholder="닉네임">
+            </div>
+            <div class="input-item">
+                <input type="text" id="contact" name="contact" placeholder="연락처">
+            </div>
         </div>
+    </div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>로그인</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div>
+        <h2>로그인</h2>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="username">사용자 이름:</label>
+                <input type="text" id="username" name="username" />
+            </div>
+            <div>
+                <label for="password">비밀번호:</label>
+                <input type="password" id="password" name="password" />
+            </div>
+            <div>
+                <button type="submit">로그인</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>
