@@ -1,9 +1,9 @@
 package com.ryan9025.dog_dictionary.service;
 
-import com.ryan9025.dog_dictionary.dto.BoardDto;
+import com.ryan9025.dog_dictionary.dto.FeedDto;
 import com.ryan9025.dog_dictionary.dto.CustomUserDetails;
-import com.ryan9025.dog_dictionary.entity.Board;
-import com.ryan9025.dog_dictionary.repository.BoardRepository;
+import com.ryan9025.dog_dictionary.entity.Feed;
+import com.ryan9025.dog_dictionary.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,28 +18,32 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class BoardService {
-    private final BoardRepository boardRepository;
+public class FeedService {
+    private final FeedRepository feedRepository;
     // 이미지가 저장되는 로컬 경로
     @Value("${file.path}")
     private String uploadFolder;
 
-    public void upload(BoardDto boardDto, CustomUserDetails customUserDetails) {
-        String originalFileName = boardDto.getFile().getOriginalFilename();
+    public void upload(FeedDto feedDto, CustomUserDetails customUserDetails) {
+        String originalFileName = feedDto.getFile().getOriginalFilename();
         // 이미지 이름 중복 방지를 위해 UUID 생성해서 파일명에 추가하는 코드
-        UUID uuid =UUID.randomUUID();
+        UUID uuid = UUID.randomUUID();
         String imageFileName = uuid + "_" + originalFileName;
 
         Path imageFilePath = Paths.get(uploadFolder + imageFileName);
 
         try {
-            Files.write(imageFilePath,boardDto.getFile().getBytes());
+            Files.write(imageFilePath, feedDto.getFile().getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Board board = boardDto.toEntity(imageFileName,customUserDetails.getLoggedMember());
-        boardRepository.save(board);
+        Feed feed = feedDto.toEntity(imageFileName, customUserDetails.getLoggedMember());
+        feedRepository.save(feed);
 
-
+    }
+    public Feed loadSingleFeed(Long id) {
+        Feed feedInfo = feedRepository.findById(id).orElseThrow();
+        log.info("boardInfo=={}", feedInfo);
+        return feedInfo;
     }
 }

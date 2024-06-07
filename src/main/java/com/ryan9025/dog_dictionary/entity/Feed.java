@@ -1,10 +1,8 @@
 package com.ryan9025.dog_dictionary.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,8 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class) // 자동으로 날짜를 생성
-@Table(name = "Board")
-public class Board {
+public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +25,6 @@ public class Board {
 
     @JoinColumn(name = "user_id")
     @ManyToOne
-    @JsonIgnoreProperties({"imageList"})
     private User user;
 
     @CreatedDate

@@ -6,7 +6,7 @@
     <div class="container d-flex justify-content-center">
         <div class="col-auto">
             <h2 class="uploadTitle">내 강아지 자랑하기</h2>
-            <form th:action="@{/board/upload}" method="post" th:object="${boardDto}" enctype="multipart/form-data">
+            <form th:action="@{/feed/upload}" method="post" th:object="${feedDto}" enctype="multipart/form-data">
                 <div class="mb-3">
                     <div class="uploadImage mb-3">
                         <label for="file" class="form-label"></label>
@@ -73,7 +73,7 @@
         ClassicEditor
             .create( document.querySelector( '#content' ), {
                 ckfinder : {
-                    uploadUrl : "/board/upload"
+                    uploadUrl : "/feed/upload"
                 }
             } )
             .catch( error => {
