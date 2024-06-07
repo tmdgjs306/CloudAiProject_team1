@@ -4,8 +4,10 @@ import com.ryan9025.dog_dictionary.constant.Role;
 import com.ryan9025.dog_dictionary.dto.JoinDto;
 import com.ryan9025.dog_dictionary.entity.User;
 import com.ryan9025.dog_dictionary.repository.UserRepository;
-import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,16 +15,18 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final FollowRepository followRepository;
 
-    public User join(JoinDto joinDto) {
+    public void join(JoinDto joinDto) {
         User dbJoinUser = User.builder()
                 .userId(joinDto.getUserId())
-                .password(joinDto.getPassword())
+                .password(bCryptPasswordEncoder.encode(joinDto.getPassword()))
                 .nickname(joinDto.getNickname())
                 .tel(joinDto.getTel())
                 .email(joinDto.getEmail())
                 .role(Role.USER.getRole())
                 .build();
-        return userRepository.save(dbJoinUser);
+        userRepository.save(dbJoinUser);
     }
 }

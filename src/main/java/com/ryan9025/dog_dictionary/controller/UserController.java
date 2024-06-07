@@ -21,7 +21,13 @@ public class UserController {
         return "/user/join";
     }
     @PostMapping("/join")
-    public String joinProcess(@ModelAttribute JoinDto joinDto) {
+    public String joinProcess(@Valid @ModelAttribute JoinDto joinDto,
+                              BindingResult bindingResult,
+                              Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("joinDto",joinDto);
+            return "/user/join";
+        }
         userService.join(joinDto);
         return "redirect:/auth/login";
     }
