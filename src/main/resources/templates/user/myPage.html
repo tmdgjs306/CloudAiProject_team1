@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<div layout:fragment="content" class="main">
+    <div class="container d-flex justify-content-center">
+        <div class="col-12">
+            <h2>마이페이지</h2>
+            <div class="myPage header mt-5">
+                <div class="profile" id="userProfile">
+                    <th:block th:if="${userInfo.user.profileImageUrl == null}">
+                        <img src="/images/noProfile.png" alt="" id="memberProfileImageTemp">
+                    </th:block>
+                    <th:block th:unless="${userInfo.user.profileImageUrl == null}">
+                        <img th:src="@{|/upload/${userInfo.user.profileImageUrl}|}" alt="" id="userProfileImage" >
+                    </th:block>
+                </div>
+                <form method="post" enctype="multipart/form-data" id="profileImageForm" style="display: none">
+                    <label for="selectProfile"></label>
+                    <input th:type="file" name="profileImageUrl" id="selectProfile" accept="image/*">
+                </form>
+                <div class="info">
+                    <div class="btn">
+                        <th:block th:if="${userInfo.pageOwner}">
+                            <a href="/feed/upload">
+                                <img src="/images/plus.png" alt="">
+                            </a>
+                        </th:block>
+                        <th:block th:unless="${userInfo.pageOwner}">
+                            <button class="btnFollow btn btn-outline-dark"
+                                    th:data-idx="${userInfo.user.id}"
+                                    th:if="${userInfo.followState}" data-follow="unFollow">팔로우 취소
+                            </button>
+                            <button class="btnFollow btn btn-outline-dark"
+                                    th:data-idx="${userInfo.user.id}"
+                                    th:unless="${userInfo.followState}" data-follow="follow">팔로우
+                            </button>
+                        </th:block>
+                    </div>
+                    <div class="follow mt-2">
+                            <span th:text="${userInfo.followCount}" id="followCount"></span>
+                    </div>
+                    <div class="title mt-3">
+                        <h3 th:text="${userInfo.user.userId}"></h3>
+                        <div th:text="${userInfo.user.intro}">여기에 소개</div>
+                    </div>
+                </div>
+                <div class="feedList myPageFeed">
+                    <ul>
+                        <th:block th:each="item:${userInfo.user.feedList}">
+                            <li>
+                                <a th:href="@{|/image/singleFeed/${item.id}|}">
+                                    <img th:src="@{|/upload/${item.imageUrl}|}" alt="">
+                                    <div class="overlay">
+                                        <span class="icon">
+                                            <i class="bi bi-heart-fill text-white fs-3"></i>
+                                        </span>
+                                        <!--<span class="text-white fs-3" th:text="${item.likeTotal}"></span>-->
+                                    </div>
+                                </a>
+                            </li>
+                        </th:block>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        let followCount = [[${userInfo.followCount}]];
+
+        const hostId = [[${userInfo.user.id}]];
+        const loggedId = [[${#authentication.principal.loggedUser.id}]];
+        const userProfile = document.getElementById('userProfile');
+        const selectProfile = document.getElementById('selectProfile');
+
+        userProfile.addEventListener("click",function () {
+            if(hostId !== loggedId) {
+                alert("프로필을 수정할 수 없습니다.");
+                return false;
+            }
+            console.log("수정 가능");
+            $("#selectProfile").trigger("click");
+        });
+        selectProfile.addEventListener("change",function (e) {
+            const file = e.target.files[0];
+            if(!file.type.match("image.*")) {
+                alert("이미지 파일만 가능합니다.");
+                return false;
+            }
+            const profileImageForm = $("#profileImageForm")[0];
+            const formData = new FormData(profileImageForm);
+            $.ajax({
+                url: `/api/user/${hostId}/profileImageUrl`,
+                data: formData,
+                contentType : false, // x-www-form-urlEncoded 되는거 막기
+                processData: false, // query string parsing 되는거 막기
+                method: "PUT",
+                success: function (response) {
+                    console.log("파일 변환 성공 ===", response);
+                    const fileReader = new FileReader();
+                    console.log("fileReader ===", fileReader);
+                    fileReader.onload = function () {
+                        console.log("파일 변경");
+                        $("#userProfileImage").attr("src", "/upload/" + response.userInfo.profileImageUrl);
+                    }
+                    fileReader.readAsDataURL(file); // onload 이벤트 발생
+                }
+            })
+        })
+    </script>
+</div>
+</html>

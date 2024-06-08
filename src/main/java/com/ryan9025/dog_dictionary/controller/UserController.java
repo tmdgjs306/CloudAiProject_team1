@@ -1,14 +1,16 @@
 package com.ryan9025.dog_dictionary.controller;
 
+import com.ryan9025.dog_dictionary.dto.CustomUserDetails;
 import com.ryan9025.dog_dictionary.dto.JoinDto;
+import com.ryan9025.dog_dictionary.dto.UserProfileDto;
 import com.ryan9025.dog_dictionary.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,5 +32,12 @@ public class UserController {
         }
         userService.join(joinDto);
         return "redirect:/auth/login";
+    }
+    @GetMapping("/myPage/{id}")
+    public String myPage(@PathVariable Long id, Model model,
+                         @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        UserProfileDto userInfo = userService.getProfile(id, Math.toIntExact(customUserDetails.getLoggedUser().getId()));
+        model.addAttribute("userInfo",userInfo);
+        return "/user/myPage";
     }
 }
