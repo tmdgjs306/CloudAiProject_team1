@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/css/**","/js/**","/images/**","/board/**","/user/**","/auth/**")
+                        .requestMatchers("/css/**","/js/**","/images/**","/feed/**","/user/**","/auth/**")
                         .permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN") // ADMIN 접근 가능
                         .anyRequest()
@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .passwordParameter("password")
                         .loginProcessingUrl("/auth/login")
                         .failureHandler(customLoginFailureHandler) // 로그인 실패 핸들러
-                        .defaultSuccessUrl("/board/feed",true)
+                        .defaultSuccessUrl("/feed/feedList",true)
                         .permitAll())
                 .logout((logout) -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))

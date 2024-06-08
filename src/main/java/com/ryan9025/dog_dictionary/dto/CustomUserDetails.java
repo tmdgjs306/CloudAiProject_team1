@@ -10,10 +10,10 @@ import java.util.Collection;
 // Spring Security 에서 제공하는 인증 방법인 UserDetails 를 사용하면 간단하게 사용자 인증을 할 수 있다.
 @Data
 public class CustomUserDetails implements UserDetails {
-    private User loggedMember;
+    private User loggedUser;
 
-    public CustomUserDetails(User loggedMember) {
-        this.loggedMember = loggedMember;
+    public CustomUserDetails(User loggedUser) {
+        this.loggedUser = loggedUser;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
             // 설정해 놓은 ROLE 가져오기
             @Override
             public String getAuthority() {
-                return loggedMember.getRole();
+                return loggedUser.getRole();
             }
         });
         return collection;
@@ -30,12 +30,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return loggedMember.getPassword();
+        return loggedUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return loggedMember.getUserId();
+        return loggedUser.getUserId();
     }
 
 }

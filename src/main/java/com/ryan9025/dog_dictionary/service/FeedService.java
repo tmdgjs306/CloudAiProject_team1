@@ -37,7 +37,7 @@ public class FeedService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Feed feed = feedDto.toEntity(imageFileName, customUserDetails.getLoggedMember());
+        Feed feed = feedDto.toEntity(imageFileName, customUserDetails.getLoggedUser());
         feedRepository.save(feed);
 
     }

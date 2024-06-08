@@ -30,7 +30,7 @@ public class FeedController {
     @PostMapping("/upload")
     public String uploadProcess(FeedDto feedDto, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         feedService.upload(feedDto,customUserDetails);
-        return "redirect:/feed/singleFeed/" + customUserDetails.getLoggedMember().getId();
+        return "redirect:/feed/singleFeed/" + customUserDetails.getLoggedUser().getId();
     }
     @GetMapping("/singleFeed/{id}")
     public String singleFeed(@PathVariable Long id, Model model) {

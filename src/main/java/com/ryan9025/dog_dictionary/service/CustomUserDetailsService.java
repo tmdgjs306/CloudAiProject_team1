@@ -18,9 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     // username -> userId ( SecurityConfig 에서 userParameter 설정 한 값 )
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Optional<User> loggedMember = userRepository.findByUserId(userId);
-        if(loggedMember.isPresent()) {
-            return new CustomUserDetails(loggedMember.get());
+        Optional<User> loggedUser = userRepository.findByUserId(userId);
+        if(loggedUser.isPresent()) {
+            return new CustomUserDetails(loggedUser.get());
         }
         throw new UsernameNotFoundException("아이디와 비밀번호를 확인 후 다시 시도해 주세요.");
     }
