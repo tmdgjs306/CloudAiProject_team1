@@ -13,7 +13,5 @@ import lombok.NoArgsConstructor;
 public class UserProfileDto {
     private boolean pageOwner;
     private User user;
-    private int followCount;
-    private boolean followState;
     private int imageTotal;
 }

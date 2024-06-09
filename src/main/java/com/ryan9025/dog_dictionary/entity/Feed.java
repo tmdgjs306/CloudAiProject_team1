@@ -25,7 +25,6 @@ public class Feed {
     private String content;
     private String imageUrl;
 
-    @JoinColumn(name = "user_id")
     @ManyToOne
     @JsonIgnoreProperties({"feedList"})
     private User user;

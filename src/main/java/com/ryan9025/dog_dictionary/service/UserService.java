@@ -47,19 +47,14 @@ public class UserService {
         userRepository.save(dbJoinUser);
     }
 
-    public UserProfileDto getProfile(Long id, int customUserDetailsId) {
+    public UserProfileDto getProfile(Long id, Long customUserDetailsId) {
         UserProfileDto userProfileDto = new UserProfileDto();
         User userInfo =
                 userRepository.findById(id).orElseThrow(
                         () -> new UsernameNotFoundException("없는 사용자 입니다.")
                 );
-        int followCount = followRepository.followCount(id);
-        int followState = followRepository.followState(id, (long) customUserDetailsId);
-
-        userProfileDto.setPageOwner(id == customUserDetailsId);
+        userProfileDto.setPageOwner(id.equals(customUserDetailsId));
         userProfileDto.setUser(userInfo);
-        userProfileDto.setFollowCount(followCount);
-        userProfileDto.setFollowState(followState > 1);
         userProfileDto.setImageTotal(userInfo.getFeedList().size());
 
         return userProfileDto;

@@ -3,110 +3,217 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 <div layout:fragment="content" class="main">
-    <div class="container d-flex justify-content-center">
-        <div class="col-12">
-            <h2>마이페이지</h2>
-            <div class="myPage header mt-5">
-                <div class="profile" id="userProfile">
-                    <th:block th:if="${userInfo.user.profileImageUrl == null}">
-                        <img src="/images/noProfile.png" alt="" id="memberProfileImageTemp">
-                    </th:block>
-                    <th:block th:unless="${userInfo.user.profileImageUrl == null}">
-                        <img th:src="@{|/upload/${userInfo.user.profileImageUrl}|}" alt="" id="userProfileImage" >
-                    </th:block>
+    <div class="container">
+        <!-- header start -->
+        <header class="header">
+            <nav class="myPageHeaderNav">
+                <section class="userProfileImage">
+                        <div class="profile" id="userProfile">
+                            <th:block th:if="${userInfo.user.profileImageUrl == null}">
+                                <img src="/images/noProfile.png" alt="" id="userProfileImageTemp">
+                            </th:block>
+                            <th:block th:unless="${userInfo.user.profileImageUrl == null}">
+                                <img th:src="@{|/upload/${userInfo.user.profileImageUrl}|}" alt="" id="userProfileImage" >
+                            </th:block>
+                        </div>
+                        <form method="post" enctype="multipart/form-data" id="profileImageForm" style="display: none">
+                            <label for="selectProfile"></label>
+                            <input th:type="file" name="profileImageUrl" id="selectProfile">
+                        </form>
+                        </section>
+                <div class="infoBundle">
+                    <section class="userSetting">
+                                <div>
+                                    <div class="d-flex">
+                                        <div class="userId">
+                                            <p class="userId" th:text="${userInfo.user.userId}"></p>
+                                        </div>
+                                        <div class="modifyBtn">
+                                            <a href="/user/modifyProfile">
+                                            <button class="btn btn-dark">프로필 편집</button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                    <section class="userInfo">
+                                <div>
+                                    <ul class="userInfoList">
+                                        <li class="feedCount">
+                                            <div>
+                                                게시물
+                                                <span th:text="${userInfo.imageTotal}"></span>
+                                            </div>
+                                        </li>
+                                        <li class="followerCount">
+                                            팔로워
+                                            <span>150</span>
+                                        </li>
+                                        <li class="followingCount">
+                                            팔로잉
+                                            <span>160</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </section>
+                    <section class="userIntro">
+                                <div>
+                                    <div class="userNickname">
+                                        <span th:text="${userInfo.user.nickname}"></span>
+                                    </div>
+                                    <div class="userIntro">
+                                        <span th:text="${userInfo.user.intro}"></span>
+                                    </div>
+                                </div>
+                            </section>
                 </div>
-                <form method="post" enctype="multipart/form-data" id="profileImageForm" style="display: none">
-                    <label for="selectProfile"></label>
-                    <input th:type="file" name="profileImageUrl" id="selectProfile" accept="image/*">
-                </form>
-                <div class="info">
-                    <div class="btn">
+            </nav>
+            <div class="contentHeader">
+                <section class="uploadFeed">
+                    <div class="_uploadFeed">
                         <th:block th:if="${userInfo.pageOwner}">
                             <a href="/feed/upload">
                                 <img src="/images/plus.png" alt="">
                             </a>
                         </th:block>
                         <th:block th:unless="${userInfo.pageOwner}">
-                            <button class="btnFollow btn btn-outline-dark"
-                                    th:data-idx="${userInfo.user.id}"
-                                    th:if="${userInfo.followState}" data-follow="unFollow">팔로우 취소
-                            </button>
-                            <button class="btnFollow btn btn-outline-dark"
-                                    th:data-idx="${userInfo.user.id}"
-                                    th:unless="${userInfo.followState}" data-follow="follow">팔로우
-                            </button>
                         </th:block>
                     </div>
-                    <div class="follow mt-2">
-                            <span th:text="${userInfo.followCount}" id="followCount"></span>
-                    </div>
-                    <div class="title mt-3">
-                        <h3 th:text="${userInfo.user.userId}"></h3>
-                        <div th:text="${userInfo.user.intro}">여기에 소개</div>
-                    </div>
-                </div>
-                <div class="feedList myPageFeed">
-                    <ul>
-                        <th:block th:each="item:${userInfo.user.feedList}">
-                            <li>
-                                <a th:href="@{|/image/singleFeed/${item.id}|}">
-                                    <img th:src="@{|/upload/${item.imageUrl}|}" alt="">
-                                    <div class="overlay">
-                                        <span class="icon">
-                                            <i class="bi bi-heart-fill text-white fs-3"></i>
-                                        </span>
-                                        <!--<span class="text-white fs-3" th:text="${item.likeTotal}"></span>-->
-                                    </div>
-                                </a>
-                            </li>
-                        </th:block>
-                    </ul>
-                </div>
+                </section>
             </div>
+        </header>
+        <!-- header end -->
+        <!-- feedList start -->
+        <div class="feedList myPageFeed">
+            <ul>
+                <th:block th:each="item:${userInfo.user.feedList}">
+                    <li>
+                        <a th:href="@{|/feed/singleFeed/${item.id}|}">
+                            <img th:src="@{|/upload/${item.imageUrl}|}" alt="">
+                            <div class="overlay">
+                                <span class="icon">
+                                    <i class="bi bi-heart-fill text-white fs-3"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                </th:block>
+            </ul>
         </div>
+        <!-- feedList end -->
     </div>
     <script th:inline="javascript">
-        let followCount = [[${userInfo.followCount}]];
-
-        const hostId = [[${userInfo.user.id}]];
-        const loggedId = [[${#authentication.principal.loggedUser.id}]];
+        const hostId = [[${userInfo.user.id}]]; // urlId
+        const loggedId = [[${#authentication.principal.loggedUser.id}]]; // 로그인한 사용자
         const userProfile = document.getElementById('userProfile');
         const selectProfile = document.getElementById('selectProfile');
 
+        // 유저 프로필 관련 기능들
         userProfile.addEventListener("click",function () {
             if(hostId !== loggedId) {
                 alert("프로필을 수정할 수 없습니다.");
                 return false;
-            }
-            console.log("수정 가능");
-            $("#selectProfile").trigger("click");
-        });
-        selectProfile.addEventListener("change",function (e) {
-            const file = e.target.files[0];
-            if(!file.type.match("image.*")) {
-                alert("이미지 파일만 가능합니다.");
-                return false;
-            }
-            const profileImageForm = $("#profileImageForm")[0];
-            const formData = new FormData(profileImageForm);
-            $.ajax({
-                url: `/api/user/${hostId}/profileImageUrl`,
-                data: formData,
-                contentType : false, // x-www-form-urlEncoded 되는거 막기
-                processData: false, // query string parsing 되는거 막기
-                method: "PUT",
-                success: function (response) {
-                    console.log("파일 변환 성공 ===", response);
-                    const fileReader = new FileReader();
-                    console.log("fileReader ===", fileReader);
-                    fileReader.onload = function () {
-                        console.log("파일 변경");
-                        $("#userProfileImage").attr("src", "/upload/" + response.userInfo.profileImageUrl);
+            } else {
+                $("#selectProfile").trigger("click");
+
+                // 프로필 이미지를 바꾸는 코드
+                selectProfile.addEventListener("change",function (e) {
+                    const file = e.target.files[0];
+                    if(!file.type.match("image.*")) {
+                        alert("이미지 파일만 가능합니다.");
+                        return false;
                     }
-                    fileReader.readAsDataURL(file); // onload 이벤트 발생
+                    const profileImageForm = $("#profileImageForm")[0];
+                    const formData = new FormData(profileImageForm);
+                    $.ajax({
+                        url: `/api/user/${hostId}/profileImageUrl`,
+                        data: formData,
+                        contentType : false, // x-www-form-urlEncoded 되는거 막기
+                        processData: false, // query string parsing 되는거 막기
+                        method: "PUT",
+                        success: function (response) {
+                            console.log("파일 변환 성공 ===", response);
+                            const fileReader = new FileReader();
+                            console.log("fileReader ===", fileReader);
+                            fileReader.onload = function () {
+                                console.log("파일 변경");
+                                $("#userProfileImage").attr("src", "/upload/" + response.userInfo.profileImageUrl);
+                            }
+                            fileReader.readAsDataURL(file); // onload 이벤트 발생
+                        }
+                    })
+                })
+            }
+        });
+
+        // 팔로우 관련 기능들
+        /*
+        $("body").on("click", ".btnFollow", function () {
+            const follow = $(this).data("follow"); // 팔로우 상태
+            const id = $(this).data("idx"); // urlId
+            const _this = $(this);
+            const followUrl = "/api/follow/" + id;
+            const method = follow === "follow" ? "POST" : "DELETE"; // follow -> post / unfollow -> delete
+            console.log("버튼 눌러짐");
+            $.ajax({
+                url: followUrl,
+                method: method,
+                success: function (response) {
+                    console.log(response);
+                    if (follow === "follow") {
+                        _this.data("follow", "unFollow");
+                        _this.text("언팔로우");
+                        followCount++;
+                    } else {
+                        _this.data("follow", "follow");
+                        _this.text("팔로우");
+                        followCount--;
+                    }
+                    $("#followCount").text(followCount);
+                },
+                error: function (xhr, status, error) {
+                    console.error("에러: ", error);
+                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+                }
+            });
+            console.log(follow === "follow" ? "팔로우" : "언팔로우");
+        });
+        $("#btnFollowInfo").on("click",function(){
+            $.ajax({
+                url:`/api/user/${hostId}/follow`,
+                success:function(response){
+                    console.log(response);
+
+                    let tempHtml = "";
+                    if(response.followList.length === 0) {
+                        tempHtml="<p>팔로우하는 사람이 없습니다.</p>"
+                    } else {
+                        $.each(response.followList,function(idx,item){
+                            const profileImageUrl = item.profileImageUrl;
+                            const nickname = item.nickname;
+                            const equalState = item.equalState;
+                            const followState= item.followState;
+                            let btn = "";
+                            if(equalState === "1") {
+                                btn = "";
+                            } else {
+                                if(followState !== "1") {
+                                    btn = `<button class="btnFollow btn btn-dark"  data-subscribe="follow" data-idx="${item.id}">팔로우</button>`;
+                                } else {
+                                    btn = `<button class="btnFollow btn btn-dark"  data-subscribe="unFollow"  data-idx="${item.id}">언팔로우</button>`;
+                                }
+                            }
+                            tempHtml+=`<li>
+                            <span><img src="/upload/${profileImageUrl}" class="thumb" alt=""></span>
+                            <span class="nickname">${nickname}</span>
+                            ${btn}
+                        </li>`
+                        });
+                    }
+                    $(".followList").html(tempHtml);
                 }
             })
-        })
+        });*/
     </script>
 </div>
 </html>

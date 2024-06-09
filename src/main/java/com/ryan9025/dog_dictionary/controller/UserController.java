@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/myPage/{id}")
     public String myPage(@PathVariable Long id, Model model,
                          @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        UserProfileDto userInfo = userService.getProfile(id, Math.toIntExact(customUserDetails.getLoggedUser().getId()));
+        UserProfileDto userInfo = userService.getProfile(id, customUserDetails.getLoggedUser().getId());
         model.addAttribute("userInfo",userInfo);
         return "/user/myPage";
     }
