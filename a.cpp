@@ -1,4 +1,0 @@
-#iosream.io
-
-
-println("hello");
