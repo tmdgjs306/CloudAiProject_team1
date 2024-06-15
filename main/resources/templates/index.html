@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns: th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>부멍님이 누구니?</title>
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" th:href="@{/CSS/bootstrap2.css}"/>
+        <!-- bootStrap Core-->
+        <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+
+    <body id="page-top">
+
+        <!-- Head-->
+        <div class="container">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+                    <span class="fs-4">부멍님이 누구니?</span>
+                </a>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a href="/" class="nav-link active" aria-current="page">홈페이지</a></li>
+                    <li class="nav-item"><a href="/board/feed" class="nav-link">게시판</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">로그인</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">회원가입</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">정보</a></li>
+                </ul>
+            </header>
+        </div>
+
+        <!-- Header-->
+        <header class="masthead text-center text-white">
+            <div class="masthead-content">
+                <div class="container px-5">
+                    <h1 class="masthead-heading mb-0">강아지 품종정보</h1>
+                    <h2 class="masthead-subheading mb-0">부멍님이 누구니?</h2>
+                    <a class="btn btn-primary btn-xl rounded-pill mt-5" href="/main">지금 바로 시작하기!</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content section 1-->
+        <section>
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                    <div class="col-lg-6 order-lg-2">
+                        <div class="p-5"><img class="img-fluid rounded-circle" th:src="@{/images/dog1.png}" alt="..." /></div>
+                    </div>
+                    <div class="col-lg-6 order-lg-1">
+                        <div class="p-5">
+                            <h2 class="display-4">프로젝트 설명</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione voluptatum molestiae adipisci, beatae obcaecati.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Content section 2-->
+        <section>
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="p-5"><img class="img-fluid rounded-circle" th:src="@{/images/dog1.png}" alt="..." /></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="p-5">
+                            <h2 class="display-4">제공하는 기능</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione voluptatum molestiae adipisci, beatae obcaecati.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Content section 3-->
+        <section>
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                    <div class="col-lg-6 order-lg-2">
+                        <div class="p-5"><img class="img-fluid rounded-circle" th:src="@{/images/dog1.png}" alt="..." /></div>
+                    </div>
+                    <div class="col-lg-6 order-lg-1">
+                        <div class="p-5">
+                            <h2 class="display-4">만든 사람들</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod aliquid, mollitia odio veniam sit iste esse assumenda amet aperiam exercitationem, ea animi blanditiis recusandae! Ratione voluptatum molestiae adipisci, beatae obcaecati.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer-->
+        <footer class="py-4" id="footer" style="background-color: dodgerblue">
+            <div class="container px-4"><p class="m-0 text-center small" style="color:white">Copyright &copy; 부멍님이 누구니? 2024</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
