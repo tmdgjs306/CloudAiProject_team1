@@ -11,7 +11,7 @@ model = custom_load_model()
 labels = get_labels()
 preprocess_input = preprocess_input
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST']) 
 def predict():
     try:
         data = request.json
@@ -23,7 +23,7 @@ def predict():
         return jsonify(results)
 
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)})
  
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5500, debug=True)
