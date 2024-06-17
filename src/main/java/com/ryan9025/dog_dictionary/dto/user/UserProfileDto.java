@@ -1,4 +1,4 @@
-package com.ryan9025.dog_dictionary.dto;
+package com.ryan9025.dog_dictionary.dto.user;
 
 import com.ryan9025.dog_dictionary.entity.User;
 import lombok.AllArgsConstructor;

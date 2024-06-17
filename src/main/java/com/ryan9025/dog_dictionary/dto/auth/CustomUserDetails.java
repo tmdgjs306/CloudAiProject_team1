@@ -1,4 +1,4 @@
-package com.ryan9025.dog_dictionary.dto;
+package com.ryan9025.dog_dictionary.dto.auth;
 
 import com.ryan9025.dog_dictionary.entity.User;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
             // 설정해 놓은 ROLE 가져오기
             @Override
             public String getAuthority() {
-                return loggedUser.getRole();
+                return loggedUser.getRole().toString();
             }
         });
         return collection;

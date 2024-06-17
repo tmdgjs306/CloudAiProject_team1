@@ -1,6 +1,6 @@
 package com.ryan9025.dog_dictionary.service;
 
-import com.ryan9025.dog_dictionary.dto.CustomUserDetails;
+import com.ryan9025.dog_dictionary.dto.auth.CustomUserDetails;
 import com.ryan9025.dog_dictionary.entity.User;
 import com.ryan9025.dog_dictionary.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

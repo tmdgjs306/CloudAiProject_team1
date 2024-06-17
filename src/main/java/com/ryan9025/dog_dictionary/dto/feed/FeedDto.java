@@ -1,4 +1,4 @@
-package com.ryan9025.dog_dictionary.dto;
+package com.ryan9025.dog_dictionary.dto.feed;
 
 import com.ryan9025.dog_dictionary.entity.Feed;
 import com.ryan9025.dog_dictionary.entity.User;
