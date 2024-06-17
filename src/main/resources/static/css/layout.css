@@ -2,32 +2,75 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    outline: none;
 }
 a {
     text-decoration: none;
     color: black;
 }
-ul,ol {
-    margin: 0;
-    padding: 0;
+button {
+    cursor: pointer;
+}
+.container {
+    width: 100%;
+    min-height: 100%;
 }
 .headerNav {
     color: black;
+}
+.title {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 70px;
 }
 /* ================ Default Setting End ================ */
 
 /* ==================== 회원가입 페이지 Start ==================== */
 .join {
-    margin-top: 100px;
     margin-left: 300px;
+}
+.alert-danger, .alert-success {
+    margin-top: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+.valid {
+    color: green;
+    font-size: 20px;
 }
 .errors {
     color: red;
 }
-
+#btnJoin {
+    margin-left: 300px;
+}
 /* ==================== 회원가입 페이지 End ==================== */
 
 /* ==================== 로그인 페이지 Start ==================== */
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+}
+.loginImage {
+    margin-left: 70px;
+    margin-right: 100px;
+}
+.loginLabel {
+    font-weight: bold;
+    font-size: 90px;
+}
+.loginForm {
+    width: 700px;
+}
+.linkJoin {
+    width: 700px;
+}
 /* ==================== 로그인 페이지 End ==================== */
 
 /* ==================== 업로드 페이지 Start ==================== */
@@ -35,6 +78,17 @@ ul,ol {
     display: flex;
     justify-content: center;
     font-weight: bold;
+}
+.textarea {
+    width: 100%;
+    resize: none;
+}
+.uploadImage {
+    display: flex;
+    justify-content: center;
+}
+#previewIcon {
+    display: none;
 }
 /* ==================== 업로드 페이지 End ==================== */
 
@@ -120,10 +174,10 @@ ul,ol {
 }
 
 /* Section: userSetting */
-.userId {
+.id {
     font-size: 35px;
 }
-.modifyBtn {
+.editBtn {
     margin-left: 40px;
 }
 
@@ -165,7 +219,7 @@ ul,ol {
     height: 200px;
     object-fit: cover;
 }
-.myPageFeed {
+.myPageFeed li {
     position: relative;
 }
 .myPageFeed li .overlay {
