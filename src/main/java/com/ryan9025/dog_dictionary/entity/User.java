@@ -1,26 +1,21 @@
 package com.ryan9025.dog_dictionary.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.ryan9025.dog_dictionary.constant.Role;
+import com.ryan9025.dog_dictionary.BaseTimeEntity;
+import com.ryan9025.dog_dictionary.constant.RoleType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@EqualsAndHashCode(callSuper = true)
+@Data // @Getter, @Setter, @RequiredArgsConstructor,
+// @ToString 을 한번에 설정해주는 어노테이션
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,17 +34,13 @@ public class User {
 
     private String profileImageUrl;
     private String intro;
-    private String role;
 
-    // 양방향 매핑
+    @Enumerated(EnumType.STRING)
+    private RoleType role;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) // 원래는 column 생성하지만, User entity 포함되는 속성이 아니면 생성 x
+
     @JsonIgnoreProperties({"user"})
+    @OneToMany(mappedBy = "user")
     private List<Feed> feedList;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
 }

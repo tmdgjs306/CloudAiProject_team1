@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString
-public enum Role {
+public enum RoleType {
     ADMIN("ROLE_ADMIN"), // 관리자 권한을 받을 ROLE
     USER("ROLE_USER"); // 회원 가입시, 기본적으로 부여되는 ROLE
 
