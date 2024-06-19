@@ -1,13 +1,8 @@
-# from io import BytesIO
-# from PIL import Image
-import numpy as np
-# import requests
-from keras.preprocessing import image
-# from flask import jsonify
-import tensorflow as tf
-
 from io import BytesIO
 from PIL import Image, UnidentifiedImageError
+import numpy as np
+from keras.preprocessing import image
+import tensorflow as tf
 import requests
 from flask import abort
 
@@ -45,8 +40,6 @@ def verify_image(image_url):
         abort(500, description=error_message)
 
 def preprocess_image(img):
-    print("-"*50)
-    print(type(img))
     img = img.resize((224, 224))  # 이미지 로드 및 크기 조정
     img_array = image.img_to_array(img)  # 이미지를 numpy 배열로 변환
     img_array = np.expand_dims(img_array, axis=0)  # 배치 차원 추가
