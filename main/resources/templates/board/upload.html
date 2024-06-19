@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<div layout:fragment="content" class="main">
+    <div class="container d-flex justify-content-center">
+        <div class="col-6">
+            <h2 class="uploadTitle">내 강아지 자랑하기</h2>
+            <form th:action="@{/board/upload}" method="post" th:object="${boardDto}">
+                <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="file" class="form-label"></label>
+                        <input class="form-control" type="file" id="file" name="image">
+                    </div>
+                    <div class="preview-box">
+                        <img src="/images/dog_6.jpg" id="preview" alt="">
+                    </div>
+                    <div class="mt-3 mb-3">
+                        <label for="content">
+                            <textarea class="form-control" id="content" rows="5" name="content" th:field="*{content}"></textarea>
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-5 d-grid">
+                    <button class="btn btn-dark" id="btnUpload">업로드</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        /*$("#file").on("change",function (e) {
+            console.log(e);
+            const file = e.target.files[0];
+            if (!file.type.match("image.*")) {
+                alert("이미지 파일만 업로드 할 수 있습니다.");
+                return false;
+            }
+            let fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $("#preview").attr("src".e.target.result);
+            }
+            fileReader.readAsDataURL(file);
+        });*/
+
+        ClassicEditor
+            .create( document.querySelector( '#content' ), {
+                ckfinder : {
+                    uploadUrl : "/board/upload"
+                }
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+        function notice () {
+            alert("글써짐");
+        }
+        const uploadBtn = document.getElementById('btnUpload');
+        uploadBtn.addEventListener("click",notice);
+    </script>
+</div>
+</html>
