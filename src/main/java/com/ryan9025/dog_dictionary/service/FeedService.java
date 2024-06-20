@@ -50,6 +50,9 @@ public class FeedService {
     public Feed loadSingleFeed(Long id) {
         return feedRepository.findById(id).orElseThrow();
     }
+    public Feed getFeedId(Long feedId) {
+        return feedRepository.findById(feedId).orElseThrow();
+    }
     public Page<Feed> loadFeeds(Long customDetailsId, Pageable pageable) {
         Page<Feed> feeds = feedRepository.feed(customDetailsId,pageable);
         feeds.forEach((feed)->{

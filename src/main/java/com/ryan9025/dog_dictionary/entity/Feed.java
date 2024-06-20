@@ -40,7 +40,7 @@ public class Feed extends BaseTimeEntity {
 
     @OrderBy("id DESC")
     @JsonIgnoreProperties({"feed"})
-    @OneToMany(mappedBy = "feed")
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "feed",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    private List<Comments> comments;
 
 }
