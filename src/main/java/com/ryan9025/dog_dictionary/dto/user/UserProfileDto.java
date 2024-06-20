@@ -14,4 +14,9 @@ public class UserProfileDto {
     private boolean pageOwner;
     private User user;
     private int imageTotal;
+    private boolean followState;
+    // 로그인한 사용자가 url 사용자를 팔로우하면  + 1
+    private int followerCount;
+
+    private int followingCount;
 }

@@ -9,11 +9,12 @@ import lombok.*;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Data // @Getter, @Setter, @RequiredArgsConstructor,
-// @ToString 을 한번에 설정해주는 어노테이션
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class User extends BaseTimeEntity {
     @Id

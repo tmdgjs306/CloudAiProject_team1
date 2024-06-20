@@ -29,4 +29,14 @@ public class UserApiController {
         return resultMap;
     }
 
+    @GetMapping("/user/{urlId}/follow")
+    public Map<String, Object> followerList(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @PathVariable Long urlId) {
+        List<FollowDto> followerList = followService.followerList(
+                customUserDetails.getLoggedUser().getId(),urlId);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("followerList",followerList);
+        return  resultMap;
+    }
 }

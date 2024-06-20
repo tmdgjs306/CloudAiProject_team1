@@ -71,5 +71,36 @@ $("body").on("click", ".btnFollow", function () {
         });
         console.log("언팔로우!!");
     }
-})
+});
+const followerModal = new bootstrap.Modal("#followerModal");
+$(".followerCount").on("click",function(){
+    followerModal.show();
+    $.ajax({
+        url:`/api/user/${hostId}/follow`,
+        success:function(response){
+            console.log(response);
+            let tempHtml = "";
+            if(response.followerList.length === 0) {
+                tempHtml="<p>팔로우하는 사람이 없습니다.</p>"
+            } else {
+                $.each(response.followerList,function(idx,item){
+                    const profileImageUrl = item.profileImageUrl;
+                    const nickname = item.nickname;
+                    const equalState = item.equalState;
+                    const followState= item.followState;
+                    let btn = "";
+                       /* if(equalState !== "1" && followState !== "1") {
+                            btn = `<button class="btn btn-dark" id="btnFollow" data-follow="unFollow" data-idx="${item.id}">삭제</button>`;
+                        }*/
+                    tempHtml+=`<li>
+                            <span><img src="/upload/${profileImageUrl}" class="thumb" alt=""></span>
+                            <span class="nickname">${nickname}</span>
+                            ${btn}
+                        </li>`
+                });
+            }
+            $(".followerList").html(tempHtml);
+        }
+    })
+});
 

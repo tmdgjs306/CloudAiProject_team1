@@ -5,19 +5,9 @@
 <div layout:fragment="content" class="main">
     <div class="container">
         <!-- 로그인한 사용자가 팔로우하는 사람들이 올린 피드를 보이는 곳 -->
-        <article class="feedList" id="feedList">
-                <!--
-                <li>
-                    <div>
-                        <div class="userProfile">
-                            <img th:src="@{|/upload/${get.user.profileImageUrl}|}" alt="">
-                        </div>
-                        <div class="userFeedImage">
-                            <img th:src="@{|/upload/${getFeedInfo.imageUrl}|}" alt="">
-                        </div>
-                    </div>
-                </li>
-                -->
+        <article class="followerFeedList" id="followerFeedList">
+            <input type="hidden" id="feedId" th:value="${feedId}">
+
         </article>
     </div>
     <script th:inline="javascript">
