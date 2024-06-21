@@ -12,15 +12,37 @@ import {NavigationContainer} from "@react-navigation/native";
 import Ionic from "react-native-vector-icons/Ionicons";
 import AnalyzeScreen from "./src/screens/Analyze";
 import ResultScreen from "./src/screens/result";
+import LoginScreen from "./src/screens/Login";
+import SignScreen from "./src/screens/Sign";
+import app from './firebase';
+import { configureStore } from '@reduxjs/toolkit'
+import userReducer from "./src/redux/reducers/userReducer";
+import {Provider} from "react-redux";
+import EditPostScreen from "./src/screens/EditPost";
 const App = () =>{
+    //redux store configuration
+    const store = configureStore({
+        reducer: {
+            user: userReducer,
+        }
+    })
+
+    //redux Test Code Store UserData
+    // console.log('store.getState()', store.getState());
+    // store.dispatch({
+    //     type: 'ADD_USER',
+    //     isLogin: true,
+    //     email: "test123@gmail.com",
+    //     name: "testPerson",
+    //     imgUrl: "www.example.com/image.png",
+    // });
+    // console.log('store.getState()', store.getState());
 
     // Stack Navigator 
     const Stack = createNativeStackNavigator();
 
     // Bottom Tab Navigator Configuration
     const Tab = createBottomTabNavigator();
-
-
     const BottomTabScreen = () =>{
         return (
             // Bottom Navigator Style Configuration
@@ -57,6 +79,7 @@ const App = () =>{
     }
     
     return (
+        <Provider store={store}>
         <NavigationContainer
             screenOptions ={{
             }}
@@ -64,13 +87,16 @@ const App = () =>{
             <Stack.Navigator  screenOptions={{
                 headerShown: false,
             }}>
+                <Stack.Screen name = "Login" component={LoginScreen}/>
                 <Stack.Screen name = "Bottom" component={BottomTabScreen} />
                 <Stack.Screen name = "Status" component={StatusScreen} /> 
                 <Stack.Screen name = "FriendProfile" component={FriendProfileScreen} /> 
                 <Stack.Screen name = "EditProfile" component={EditProfileScreen} /> 
                 <Stack.Screen name = "result" component={ResultScreen} /> 
+                <Stack.Screen name = "Sign" component={SignScreen} /> 
             </Stack.Navigator>
         </NavigationContainer>
+        </Provider>
     );
 }
 

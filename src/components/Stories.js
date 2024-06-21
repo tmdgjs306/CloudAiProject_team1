@@ -4,6 +4,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 const Stories = () => {
     const navigation = useNavigation();
+    /*현재는 스토리 내용을 로컬로 하드코딩 해놓음 -> 추후 백엔드 개발자와 협업을 통해 Server 에서 받아오도록 수정할 예정 */
     const storyInfo = [
         {
             id: 1,

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity} from 'react-native';
 import axios from 'axios';
 import { resultPageLayout } from '../styleSheet/resultPageLayout';
+import { useNavigation } from '@react-navigation/native';
 {/*
   * Author: Han_Seung_Heon,
   * Function: AI 서버로 부터 판독 결과를 가져와 보여주는 페이지 
@@ -13,6 +14,7 @@ const Result = ({ route }) => {
   const { photo } = route.params;
   const [analysisResult, setAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchAnalysisResult = async () => {
@@ -50,15 +52,20 @@ const Result = ({ route }) => {
 
   if (loading) {
     return (
-      <View style={resultPageLayout.container}>
+      <View style={resultPageLayout.loading}>
         <ActivityIndicator size="large" color="#0000ff" />
         <Text>사진을 전송중입니다...</Text>
       </View>
     );
   }
-
+  const handleGoBack = () =>{
+    navigation.goBack();
+  }
   return (
     <View style={resultPageLayout.container}>
+      <View style={resultPageLayout.titleContainer}>
+        <Text style={resultPageLayout.title}>결과페이지</Text>
+      </View>
       <Image source={{ uri: photo }} style={resultPageLayout.photo} />
       {analysisResult && (
         <View style={resultPageLayout.resultContainer}>
@@ -71,7 +78,9 @@ const Result = ({ route }) => {
           <Text style={resultPageLayout.resultText}>ID: {analysisResult.userId}</Text>
           <Text style={resultPageLayout.resultText}>id: {analysisResult.id}</Text>
           <Text style={resultPageLayout.resultText}>title: {analysisResult.title}</Text>
-          <Text style={resultPageLayout.body}>ID: {analysisResult.body}</Text>
+          <TouchableOpacity onPress={handleGoBack}>
+            <Text style={{color:'black', fontSize:20}}>뒤로가기</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>

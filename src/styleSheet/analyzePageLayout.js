@@ -4,7 +4,7 @@ export const analyzePageLayout = StyleSheet.create({
     totalContainer:{
         flex:1,
         flexDirection: 'column',
-        backgroundColor: '#E8F5FF',
+        backgroundColor: 'white',
     },
     topContainer:{
         flex:1,
@@ -13,7 +13,7 @@ export const analyzePageLayout = StyleSheet.create({
         height: "80%",
         flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor:"#28AEFF",
+        backgroundColor:"#212121",
     },
     pageTitleText:{
         fontSize: 20,
@@ -35,15 +35,24 @@ export const analyzePageLayout = StyleSheet.create({
         zIndex: -1,
     },
     bottomContainer:{
-        flex:1,
+        flex: 0.3,
         flexDirection: 'column',
+        alignContent: 'center',
+        alignItems: 'center',
     },
     bottomSheetBtn:{
         borderRadius: 100,
         marginTop: 15,
         marginLeft: 20,
         marginRight: 20,
+        width: 300,
         justifyContent: 'center',
-        backgroundColor : '#28AEFF'
+        backgroundColor : '#50BCDF',
     },
+    bottomSheetBtnTitle:{
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
+    }
+
 });
