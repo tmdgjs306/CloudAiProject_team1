@@ -19,7 +19,7 @@ const Home = () => {
   const navigation = useNavigation();
 
   const handleEditPost = () =>{
-    navigation.navigate('Profile');
+    navigation.navigate('EditPost');
   };
   return (
     <SafeAreaView style={homePageLayout.TotalContainer}

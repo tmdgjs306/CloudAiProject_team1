@@ -16,7 +16,7 @@ const Stories = () => {
                 console.error("Error fetching stories:", error); 
             }
         };
-        fetchStories(); .
+        fetchStories(); 
     }, []); 
 
     return (

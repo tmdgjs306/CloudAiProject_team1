@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import Toast from 'react-native-toast-message';
@@ -6,19 +6,22 @@ import { useNavigation } from '@react-navigation/native';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import {camera, imageLibrary} from '../api/ImagePicker';
 import { useDispatch, useSelector } from 'react-redux';
-import imageUpload from '../api/imageUpload';
+import { ButtonGroup } from '@rneui/themed';
+
 const SignScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
+    const [address, setAddress] = useState('');
     const navigation = useNavigation();
     const auth = getAuth();
     const [photo, setPhoto] = useState('');
     const reduxUser = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [isVisible, setIsVisible] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(0); // New state for pet size selection
+    const petSizes = ['소', '중', '대'];
 
     const handleSignUp = async () => {
         if (password !== confirmPassword) {
@@ -33,11 +36,10 @@ const SignScreen = () => {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            await 
             await updateProfile(user, {
                 displayName: name,
                 photoURL: 'https://www.example.com/profile.png',
-                phonNumber: phone,
+                phoneNumber: phone,
             });
             console.log(user);
             Toast.show({
@@ -56,15 +58,15 @@ const SignScreen = () => {
             );
         }
     };
-    
+
     return (
         <View style={styles.container}>
             <Text style={styles.title}>회원가입</Text>
             <View style={styles.profileContainer}>
-                <Image style={styles.profileImage} source={photo? { uri: photo }: require("../../assets/images/sign_profile.png")} />
+                <Image style={styles.profileImage} source={photo ? { uri: photo } : require("../../assets/images/sign_profile.png")} />
                 <TouchableOpacity 
-                style={styles.button}
-                onPress={()=> imageLibrary(setPhoto,setIsVisible)}
+                    style={styles.button}
+                    onPress={() => imageLibrary(setPhoto, setIsVisible)}
                 >
                     <Text style={styles.buttonText}>사진변경</Text>
                 </TouchableOpacity>
@@ -78,12 +80,29 @@ const SignScreen = () => {
                     style={styles.input}
                 />
                 <TextInput
-                    placeholder="전화번호"
+                    placeholder="주소"
                     placeholderTextColor="black"
-                    value={phone}
-                    onChangeText={text => setPhone(text)}
+                    value={address}
+                    onChangeText={text => setAddress(text)}
                     style={styles.input}
                 />
+                <TextInput
+                    placeholder="우편번호"
+                    placeholderTextColor="black"
+                    value={address}
+                    onChangeText={text => setAddress(text)}
+                    style={styles.input}
+                />
+                <View style={styles.radioContainer}>
+                    <Text style={styles.radioTitle}>반려동물 크기를 입력해주세요:</Text>
+                    <ButtonGroup
+                        onPress={(index) => setSelectedIndex(index)}
+                        selectedIndex={selectedIndex}
+                        buttons={petSizes}
+                        containerStyle={{ marginBottom: 20 }}
+                    />
+                </View>
+                
                 <TextInput
                     placeholder="이메일"
                     placeholderTextColor="black"
@@ -196,5 +215,14 @@ const styles = StyleSheet.create({
     cancelButtonText: {
         color: 'white',
         fontWeight: '500'
+    },
+    radioContainer: {
+        marginBottom: 20,
+    },
+    radioTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: 'black'
     }
 });

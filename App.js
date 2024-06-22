@@ -19,6 +19,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import userReducer from "./src/redux/reducers/userReducer";
 import {Provider} from "react-redux";
 import EditPostScreen from "./src/screens/EditPost";
+import testScreen from "./src/screens/Test";
 const App = () =>{
     //redux store configuration
     const store = configureStore({
@@ -93,7 +94,9 @@ const App = () =>{
                 <Stack.Screen name = "FriendProfile" component={FriendProfileScreen} /> 
                 <Stack.Screen name = "EditProfile" component={EditProfileScreen} /> 
                 <Stack.Screen name = "result" component={ResultScreen} /> 
-                <Stack.Screen name = "Sign" component={SignScreen} /> 
+                <Stack.Screen name = "Sign" component={SignScreen} />
+                <Stack.Screen name = "Test" component={testScreen} /> 
+                <Stack.Screen name = "EditPost" component={EditPostScreen} />
             </Stack.Navigator>
         </NavigationContainer>
         </Provider>

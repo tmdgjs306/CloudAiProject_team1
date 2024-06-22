@@ -55,6 +55,10 @@ const LoginScreen = () => {
         }
     }
 
+    const handleTest = () =>{
+        navigation.replace('Test');
+    }
+
     return (
         
         <View
@@ -104,6 +108,13 @@ const LoginScreen = () => {
                 >
                 <Text style={styles.buttonText}>게스트 로그인</Text>
                 </TouchableOpacity>
+
+                {/* <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleTest}
+                >
+                <Text style={styles.buttonText}>테스트 기능</Text>
+                </TouchableOpacity> */}
             </View>
         </View>
     )
