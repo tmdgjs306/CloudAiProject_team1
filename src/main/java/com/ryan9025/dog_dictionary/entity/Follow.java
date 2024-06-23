@@ -32,4 +32,5 @@ public class Follow extends BaseTimeEntity {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private User toUser; // 팔로우를 받는 사람
 
+
 }

@@ -1,18 +1,12 @@
 package com.ryan9025.dog_dictionary.service;
 
-import com.ryan9025.dog_dictionary.dto.follow.FollowDto;
-import com.ryan9025.dog_dictionary.exception.CustomApiException;
 import com.ryan9025.dog_dictionary.repository.FollowRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +16,21 @@ public class FollowService {
     @PersistenceContext
     EntityManager em;
 
+    // 팔로우 기능
     @Transactional
+    public void follow(Long from_user_id, Long to_user_id) {
+        // 팔로우 상태가 false(0) 이면 follow
+        if(followRepository.followState(from_user_id,to_user_id) == 0) {
+            followRepository.follow(from_user_id,to_user_id);
+
+            // 팔로우 상태가 true(1) 이면 unFollow
+        }else {
+            followRepository.unFollow(from_user_id,to_user_id);
+        }
+    }
+
+
+    /*@Transactional
     public List<FollowDto> followerList(Long loggedUserId, Long urlId) {
 
         String queryString = "SELECT u.id AS id , u.nickname, u.profileImageUrl, " +
@@ -40,19 +48,7 @@ public class FollowService {
         List<FollowDto> followDtoList = jpaResultMapper.list(query,FollowDto.class);
         return followDtoList;
 
-    }
+    }*/
 
-    @Transactional
-    public void follow(Long from_user_id, Long to_user_id) {
-        try{
-            followRepository.follow(from_user_id,to_user_id);
-        }catch (Exception e) {
-            throw new CustomApiException("이미 팔로우 하고 있는 유저입니다.");
-        }
-    }
 
-    @Transactional
-    public void unFollow(Long from_user_id, Long to_user_id) {
-        followRepository.unFollow(from_user_id,to_user_id);
-    }
 }

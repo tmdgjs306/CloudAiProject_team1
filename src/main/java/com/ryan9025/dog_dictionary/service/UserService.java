@@ -31,29 +31,35 @@ public class UserService {
     @Value("${file.path}")
     private String uploadFolder;
 
+    // myPage 화면(url 유저 정보 가져오기)
     public UserProfileDto getProfile(Long id, Long customUserDetailsId) {
-        UserProfileDto userProfileDto = new UserProfileDto();
+        // url 유저의 가입 유무
         User userInfo =
                 userRepository.findById(id).orElseThrow(
                         () -> new UsernameNotFoundException("없는 사용자 입니다.")
                 );
-
-        int followState = followRepository.followState(id, customUserDetailsId);
-        int followingCount = followRepository.followingCount(customUserDetailsId);
+        // 팔로우 상태
+        int followState = followRepository.followState(customUserDetailsId, id);
+        // 팔로잉 수
+        int followingCount = followRepository.followingCount(id);
+        // 팔로워 수
         int followerCount = followRepository.followerCount(id);
 
-        userProfileDto.setPageOwner(id.equals(customUserDetailsId));
-        userProfileDto.setUser(userInfo);
-        userProfileDto.setImageTotal(userInfo.getFeedList().size());
-        userProfileDto.setFollowState(followState >= 1);
-        userProfileDto.setFollowerCount(followerCount);
-        userProfileDto.setFollowingCount(followingCount);
+        // 빈 Dto 생성하고 값 넣기
+        UserProfileDto getProfile = new UserProfileDto();
+                       getProfile.setPageOwner(id.equals(customUserDetailsId)); // (로그인한 유저 = url 유저) 여부
+                       getProfile.setUser(userInfo); // url 유저 정보
+                       getProfile.setImageTotal(userInfo.getFeedList().size()); // url 유저 피드들
+                       getProfile.setFollowState(followState >= 1); // 로그인한 유저와 url 유저의 팔로우 상태
+                       getProfile.setFollowerCount(followerCount); // url 유저의 팔로워 수
+                       getProfile.setFollowingCount(followingCount); // url 유저의 팔로잉 수
 
+        // url 유저의 피드 좋아요 수
         userInfo.getFeedList().forEach((feed)->{
             feed.setLikesTotal(feed.getLikes().size());
         });
 
-        return userProfileDto;
+        return getProfile;
     }
     @Transactional
     public User changeProfile(Long id, MultipartFile profileImageUrl) {
