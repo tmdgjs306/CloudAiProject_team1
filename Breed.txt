@@ -1,0 +1,13 @@
+French Bulldog
+Welsh Corgi
+Beagle
+Bichon Frize
+Golden Retriever
+Labrador Retriever
+Husky
+Malamute
+Maltese
+Pomeranian
+Poodle
+Shih Tzu
+Spitz
