@@ -1,5 +1,6 @@
 package com.ryan9025.dog_dictionary.dto.auth;
 
+import com.ryan9025.dog_dictionary.constant.DogSize;
 import com.ryan9025.dog_dictionary.constant.RoleType;
 import com.ryan9025.dog_dictionary.entity.User;
 import jakarta.persistence.EnumType;
@@ -8,8 +9,10 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,7 +34,9 @@ public class JoinDto {
     @Size(max = 15, message = "닉네임은 최대 15자까지만 입력해주세요.")
     private String nickname;
 
-    private String tel;
+    private int postcode;
+    private String address;
+    private String detailAddress;
 
     @NotNull(message = "이메일은 필수 입력사항입니다.")
     private String email;
@@ -39,16 +44,9 @@ public class JoinDto {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
+    @Enumerated(EnumType.STRING)
+    private DogSize size;
+
     private Timestamp createdDate;
 
-    public User toEntity() {
-        return User.builder()
-                .userId(userId)
-                .password(password)
-                .nickname(nickname)
-                .email(email)
-                .tel(tel)
-                .role(role)
-                .build();
-    }
 }
