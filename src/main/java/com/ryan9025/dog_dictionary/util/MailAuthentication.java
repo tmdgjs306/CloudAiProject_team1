@@ -30,7 +30,7 @@ public class MailAuthentication {
         authRepository.save(dbInsertCode);
         // 인증메일 발신자, 메일 내용 설정
         MimeMessage message = javaMailSender.createMimeMessage();
-        message.setFrom("alex7006@naver.com"); // 발신자
+        message.setFrom("devryan9025@naver.com"); // 발신자
         message.setRecipients(MimeMessage.RecipientType.TO,mail);
         message.setSubject("이메일 검증"); // 메일 제목
         String content = "<h2>요청하신 인증번호입니다.</h2>"; // 메일 내용
