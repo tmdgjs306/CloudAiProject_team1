@@ -2,6 +2,8 @@ package com.ryan9025.dog_dictionary.controller;
 
 import com.ryan9025.dog_dictionary.dto.auth.JoinDto;
 import com.ryan9025.dog_dictionary.service.AuthService;
+import com.ryan9025.dog_dictionary.service.MailService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import java.util.Map;
 @Slf4j
 public class AuthController {
     private final AuthService authService;
+    private final MailService mailService;
 
     /* --------------- 로그인 ---------------- */
     @GetMapping("/login")
@@ -76,6 +79,29 @@ public class AuthController {
             return -1;
         }
         return authService.emailCheck(duplicatedEmail);
+    }
+    /* --------------- 아이디 찾기 ---------------- */
+    @GetMapping("/findUserId")
+    public String findUserId() {
+        return "/auth/findUserId";
+    }
 
+    /* --------------- 이메일 인증번호 확인 ---------------- */
+    @GetMapping("/confirmEmailAuthNum")
+    @ResponseBody
+    public int authenticatedByEmail(String userEmail) throws MessagingException {
+        // 입력한 값이 db에 있는지 확인
+        if (userEmail == null || userEmail.isEmpty()) {
+            return -1;
+        } else {
+            log.info("userEmail==={}",userEmail);
+            int returnValue = authService.emailCheck(userEmail);
+            if (returnValue == 1) {
+                mailService.sendAuthMail(userEmail);
+            } else {
+                return 0;
+            }
+        }
+        return 1;
     }
 }
