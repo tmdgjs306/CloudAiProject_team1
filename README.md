@@ -12,6 +12,3 @@
    - MySql
     
  - Front_End
-   - React Native
-   - Thymeleaf
-   - Bootstrap 5.3.2v

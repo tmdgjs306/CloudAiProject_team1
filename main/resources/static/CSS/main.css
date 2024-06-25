@@ -1,0 +1,48 @@
+/* bootstrap2.css */
+.Header {
+    text-align: center;
+}
+
+p {
+    font-size: small;
+}
+
+.submitBtn {
+    background-color: greenyellow;
+    color: black;
+    font-size: 16px;
+    border: none;
+    padding: 15px 30px;
+    margin: 2px 1px;
+    display: inline-block;
+}
+
+.Body {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 30px;
+    background-color: #fff;
+    font-weight: 600;
+    font-size: .8rem;
+}
+
+.progress-bar .progress {
+    height: 30px;
+    padding: 0;
+    text-align: center;
+    background-color: #4F98FF;
+    color: #111;
+}
+
+.progress p {
+    text-align: center;
+}

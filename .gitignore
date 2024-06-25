@@ -23,6 +23,18 @@ LICENSE
 *.gradle
 *.properties
 
+# InteliJ Files 
+*.gradle
+/test
+
+*.properties
+# IntelliJ Files
+*.properties
+
+# Server 
+*.jpg
+*.png
+
 # Package Files #
 build
 .gradle

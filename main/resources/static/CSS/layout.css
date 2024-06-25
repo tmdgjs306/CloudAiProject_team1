@@ -1,0 +1,50 @@
+.userFeed a {
+    text-decoration: none;
+}
+.fs-4 {
+    font-weight: bold;
+}
+.headerNav {
+    color: black;
+}
+.black {
+    background-color: black;
+    color: white;
+}
+.userFeedTitle {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: black;
+}
+.card {
+    width: 415px;
+}
+.dog_image {
+    height: 270px;
+    object-fit: cover;
+}
+.mixedInfo {
+    font-size: 13px;
+}
+.userBoardPagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+.pagingStyle {
+    color: black;
+    font-size: 30px;
+    border: none;
+}
+#preview {
+    width: 648px;
+}
+.uploadTitle {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
