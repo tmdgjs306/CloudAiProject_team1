@@ -1,12 +1,7 @@
 package com.ryan9025.dog_dictionary.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Authentication {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // pk
 
     private String randomCode; // 인증번호
