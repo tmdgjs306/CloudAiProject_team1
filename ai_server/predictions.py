@@ -1,7 +1,8 @@
 from db import get_dog_info_by_id
-from model import get_labels
 
-labels = get_labels()
+# 라벨 형태 변경시 사용
+# from model import get_labels
+# labels = get_labels()
 
 def filtered_predictions(connection, predictions, threshold = 0.01):
     predictions = predictions[0].tolist()
@@ -12,18 +13,18 @@ def filtered_predictions(connection, predictions, threshold = 0.01):
     # result에 각 prediction 아이템 추가 
     for prediction_item in filtered_predictions:
         dog_id = prediction_item["id"]+1
-        # get a label
-        label = labels[dog_id] if dog_id in labels else dog_id # 라벨을 한국어로 가져올 경우를 대비해서 쿼리 결과 말고 따로 csv 로 받아오는중
         # formatting score
         score = round(prediction_item["score"]* 100, 0)  # 계산을 위해 숫자 형식으로 남김 (float)
         # get information by dog_id
         dog_data = get_dog_info_by_id(connection, dog_id)
-        size = dog_data[0][2]
-        description = dog_data[0][3]
-        info = dog_data[0][4]
-        result[f"class_{dog_id}"] = [{"name" : label,
+        (dog_id, label, height, weight, description, general_info, training_info, friend_info) = dog_data[0]
+        result[f"class_{dog_id}"] = [{"dog_id": dog_id,
+                                      "name" : label,
                                       "value" : score,
-                                      "size": size,
+                                      "height": height,
+                                      "weight": weight,
                                       "description":description,
-                                      "info":info}]
+                                      "general_info": general_info,
+                                      "training_info": training_info,
+                                      "friend_info": friend_info}]
     return result

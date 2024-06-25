@@ -3,7 +3,7 @@ from model import custom_load_model, get_labels
 from image_processing import verify_image, preprocess_image
 from predictions import filtered_predictions
 from tensorflow.keras.applications.vgg16 import preprocess_input # type: ignore
-from db import create_connection
+from db import create_connection, get_dog_lifecycle_stages_id_by_breed_age, get_dog_info_by_breed_lifecycle_stage
 
 app = Flask(__name__)
 
@@ -34,6 +34,19 @@ def predict():
         pred = model.predict(img_arr)
         result = filtered_predictions(g.connection, pred)
         return jsonify(result)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@app.route('/health/<int:dog_id>/<int:dog_age>', methods=['GET'])
+def get_health_info(dog_id, dog_age):
+    try:
+        dog_lifecycle_stages_id = get_dog_lifecycle_stages_id_by_breed_age(g.connection, dog_id, dog_age)
+        health_info = get_dog_info_by_breed_lifecycle_stage(g.connection, dog_id, dog_lifecycle_stages_id)
+        if health_info:
+            return jsonify(health_info)
+        else:
+            return jsonify({"error": "No health information found"}), 404
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
