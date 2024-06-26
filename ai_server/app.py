@@ -38,9 +38,15 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/health/<int:dog_id>/<int:dog_age>', methods=['GET'])
-def get_health_info(dog_id, dog_age):
+@app.route('/health', methods=['GET'])
+def get_health_info():
     try:
+        dog_id = request.args.get('dog_id', type=int)
+        dog_age = request.args.get('dog_age', type=int)
+
+        if dog_id is None or dog_age is None:
+            return jsonify({"error": "Missing required parameters"}), 400
+        
         dog_lifecycle_stages_id = get_dog_lifecycle_stages_id_by_breed_age(g.connection, dog_id, dog_age)
         health_info = get_dog_info_by_breed_lifecycle_stage(g.connection, dog_id, dog_lifecycle_stages_id)
         if health_info:
