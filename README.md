@@ -1,14 +1,38 @@
-# Project
-동물 품종 맞춤 정보 제공 홈페이지 
-- 구현기능
-   - 품종 구분
-   - 로그인 세션
-   - 유전병 정보 제공
-   - 양육 정보 제공
+## **부멍님이누구니?**
+강아지 양육정보 제공 프로젝트 
 
-# Tech Stack 
- - Back_End 
-   - Spring Boot 3.0
-   - MySql
-    
- - Front_End
+##  ✅ 프로젝트 진행 기간   
+2024.05.13(월)~2024.06.28(금)
+
+## ✅ 프로젝트 목적
+객체 인식을 활용하여 이용자가 키우는 강아지에 맞는 양육정보를 제공하며, 
+이용자간 커뮤니티를 제공하는 것을 목적으로 한다. 
+
+## ✅ 제품 기능
+- 객체 인식을 통한 강아지 품종 정보 파악 
+- 품종 맞춤 양육정보 제공
+- 이용자간 커뮤니티(피드, 팔로우,)
+- 웹, 앱 두가지 형태로 배포  
+
+## ✅Tech Stack
+ Back_End
+- Spring Boot 3.0
+- MySql
+- Flask 
+
+Front_End
+- WEB
+  - HTML5
+  - CSS
+  - BootStrap
+  - JavaScript
+- APP
+    - react-native
+    - TypeScript
+    - firebase 
+
+AI
+- TensorFlow 
+- Keras 
+- mysql 
+- .... 
