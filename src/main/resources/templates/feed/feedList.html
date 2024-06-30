@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<div layout:fragment="content" class="main">
+    <div class="container">
+        <!-- 로그인한 사용자가 팔로우하는 사람들이 올린 피드를 보이는 곳 -->
+        <article class="followerFeedList" id="followerFeedList">
+            <input type="hidden" id="feedId" th:value="${feedId}">
+
+        </article>
+    </div>
+    <script th:inline="javascript">
+        const loggedId = [[${#authentication.principal.loggedUser.id}]];
+    </script>
+    <script th:src="@{/js/feeds.js}"></script>
+</div>
+</html>

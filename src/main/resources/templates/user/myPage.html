@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+<div layout:fragment="content" class="main">
+    <div class="container">
+        <!-- header start -->
+        <header class="header">
+            <nav class="myPageHeaderNav">
+                <section class="userProfileImage">
+                    <div class="profile" id="userProfile">
+                        <th:block th:if="${userInfo.user.profileImageUrl == null}">
+                            <img src="/images/noProfile.png" alt="" id="userProfileImageTemp">
+                        </th:block>
+                        <th:block th:unless="${userInfo.user.profileImageUrl == null}">
+                            <img th:src="@{|/upload/${userInfo.user.profileImageUrl}|}" alt="" id="userProfileImage" >
+                        </th:block>
+                    </div>
+                    <form method="post" enctype="multipart/form-data" id="profileImageForm" style="display: none">
+                        <label for="selectProfile"></label>
+                        <input th:type="file" name="profileImageUrl" id="selectProfile">
+                    </form>
+                </section>
+                <div class="infoBundle">
+                    <section class="userSetting">
+                        <div>
+                            <div class="d-flex">
+                                <div class="id">
+                                    <p class="id" th:text="${userInfo.user.userId}"></p>
+                                </div>
+                                <div class="editBtn">
+                                    <th:block th:if="${userInfo.pageOwner}">
+                                        <!-- 모달 트리거 -->
+                                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                            프로필 편집
+                                        </button>
+
+                                        <!-- 모달 -->
+                                        <div class="modal fade" id="editProfileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">프로필 편집</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="post" th:action="@{/user/editProfile}" id="editProfileForm">
+                                                            <div class="mb-3">
+                                                                <label for="changeNickname" class="col-form-label">닉네임</label>
+                                                                <input type="text" class="form-control" name="nickname" id="changeNickname">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="changeIntro" class="col-form-label">소개</label>
+                                                                <textarea class="form-control" name="intro" id="changeIntro"></textarea>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                        <button type="button" class="btn btn-primary"  onclick="document.getElementById('editProfileForm').submit();">수정하기</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th:block>
+                                    <th:block th:unless="${userInfo.pageOwner}">
+                                        <button class="btnFollow btn btn-dark"
+                                                th:data-idx="${userInfo.user.id}"
+                                                th:if="${userInfo.followState}" data-follow ="unFollow"> 팔로우
+                                        </button>
+                                        <button class="btnFollow btn btn-dark"
+                                                th:data-idx="${userInfo.user.id}"
+                                                th:unless="${userInfo.followState}" data-follow ="follow">팔로잉
+                                        </button>
+                                    </th:block>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="userInfo">
+                        <div>
+                            <ul class="userInfoList">
+                                <li class="feedCount">
+                                    <div>
+                                        게시물
+                                        <span th:text="${userInfo.imageTotal}"></span>
+                                    </div>
+                                </li>
+                                <th:block th:if="${userInfo.user.id == #authentication.principal.loggedUser.id}">
+                                    <li class="followerCount">
+                                        팔로워
+                                        <span th:text="${userInfo.followerCount}"></span>
+                                    </li>
+                                    <li class="followingCount">
+                                        팔로잉
+                                        <span th:text="${userInfo.followingCount}"></span>
+                                    </li>
+                                </th:block>
+                                <th:block th:unless="${userInfo.user.id == #authentication.principal.loggedUser.id}">
+                                    <li class="followerCount">
+                                        팔로워
+                                        <span th:text="${userInfo.followerCount}"></span>
+                                    </li>
+                                    <li class="followingCount">
+                                        팔로잉
+                                        <span th:text="${userInfo.followingCount}"></span>
+                                    </li>
+                                </th:block>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="userIntro">
+                        <div>
+                            <div class="userNickname">
+                                <span th:text="${userInfo.user.nickname}"></span>
+                            </div>
+                            <div class="userIntro">
+                                <span th:text="${userInfo.user.intro}"></span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </nav>
+            <div class="contentHeader">
+                <section class="uploadFeed">
+                    <div class="_uploadFeed">
+                        <th:block th:if="${userInfo.pageOwner}">
+                            <a href="/feed/upload">
+                                <i class="bi bi-plus-circle" style="font-size: 100px;color: black;"></i>
+                                <p style="color: black;margin-left: 25px">만들기</p>
+                            </a>
+                        </th:block>
+                        <th:block th:unless="${userInfo.pageOwner}">
+                        </th:block>
+                    </div>
+                </section>
+            </div>
+        </header>
+        <!-- header end -->
+        <!-- feedList start -->
+        <div class="feedList myPageFeed">
+            <ul>
+                <th:block th:each="item:${userInfo.user.feedList}">
+                    <li>
+                        <!-- 각각 모달로 창 띄우기 -->
+                        <a th:href="@{|/feed/singleFeed/${item.id}|}">
+                            <img th:src="@{|/upload/${item.imageUrl}|}" alt="">
+                            <div class="overlay">
+                                <span class="icon">
+                                    <i class="bi bi-heart-fill text-white fs-3"></i>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+                </th:block>
+            </ul>
+        </div>
+        <!-- feedList end -->
+    </div>
+    <script th:inline="javascript">
+        const hostId = [[${userInfo.user.id}]]; // urlId
+        const loggedId = [[${#authentication.principal.loggedUser.id}]]; // 로그인한 사용자
+
+        /* ============ 프로필 편집 모달 ================ */
+
+        const editProfileModal = new bootstrap.Modal("#editProfileModal");
+    </script>
+    <script th:src="@{/js/myPage.js}"></script>
+</div>
+</html>
