@@ -1,0 +1,261 @@
+/* ================ Default Setting Start ================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    outline: none;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+button {
+    cursor: pointer;
+}
+.container {
+    width: 100%;
+    min-height: 100%;
+}
+.headerNav {
+    color: black;
+}
+.title {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 70px;
+}
+/* ================ Default Setting End ================ */
+
+/* ==================== 회원가입 페이지 Start ==================== */
+.join {
+    margin-left: 300px;
+}
+.alert-danger, .alert-success {
+    margin-top: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+.valid {
+    color: green;
+    font-size: 20px;
+}
+.errors {
+    color: red;
+}
+#btnJoin {
+    margin-left: 300px;
+}
+/* ==================== 회원가입 페이지 End ==================== */
+
+/* ==================== 로그인 페이지 Start ==================== */
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+}
+.loginImage {
+    margin-left: 70px;
+    margin-right: 100px;
+}
+.loginLabel {
+    font-weight: bold;
+    font-size: 90px;
+}
+.loginForm {
+    width: 700px;
+}
+.linkJoin {
+    width: 700px;
+}
+/* ==================== 로그인 페이지 End ==================== */
+
+/* ==================== 업로드 페이지 Start ==================== */
+.uploadTitle {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+}
+.textarea {
+    width: 100%;
+    resize: none;
+}
+.uploadImage {
+    display: flex;
+    justify-content: center;
+}
+#previewIcon {
+    display: none;
+}
+/* ==================== 업로드 페이지 End ==================== */
+
+/* ==================== 싱글 피드 페이지 Start ==================== */
+.feedBox {
+    display: flex;
+    margin: 0 100px 0 100px;
+    padding: 0 0 0 50px;
+}
+.feedImage {
+    height: 700px;
+    width: 700px;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+}
+.feedContent {
+    width: 600px;
+    height: 700px;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+}
+.writerInfo {
+    display: flex;
+    margin-right: 0;
+}
+.writer {
+    margin-right: 20px;
+}
+.writerProfileImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    margin: 20px;
+    border: 1px solid #ccc;
+}
+.writerId {
+    width: 100px;
+}
+.writerId p {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 25px;
+}
+#modalTrigger {
+    color: black;
+    font-size: 30px;
+    margin-left: 70px;
+    margin-top: 20px;
+}
+.modalList {
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+.modalList li {
+    border-bottom: 1px solid #000000;
+}
+.contents {
+    height: auto;
+}
+
+/* ==================== 싱글 피드 페이지 End ==================== */
+
+/* ==================== 마이페이지 Start ==================== */
+
+/* HeaderNav */
+.myPageHeaderNav {
+    display: flex;
+    margin-top: 50px;
+}
+
+/* Section: userProfileImage */
+.userProfileImage {
+    width: 300px;
+}
+#userProfileImage, #userProfileImageTemp {
+    width:200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 300px;
+    border: 5px solid #ccc;
+}
+
+/* Section: userSetting */
+.id {
+    font-size: 35px;
+}
+.editBtn {
+    margin-left: 40px;
+}
+
+/* Section: userInfo */
+.userInfo {
+    margin-top: 25px;
+}
+.userInfoList {
+    display: flex;
+}
+.userInfoList li {
+    margin-right: 30px;
+    text-align: left;
+}
+
+/* Section: userIntro */
+.userIntro {
+    margin-top: 35px;
+}
+.userNickname{
+    font-size: 25px;
+}
+
+.feedList ul {
+    display: flex;
+    margin: 0;
+    flex-wrap: wrap;
+    /*justify-content: space-between;*/
+    padding-left: 0;
+}
+.feedList li {
+    flex-basis: calc(33.33% - 20px);
+    border:1px solid #ccc;
+    list-style: none;
+    margin: 10px;
+}
+.feedList li img {
+    width:100%;
+    height: 200px;
+    object-fit: cover;
+}
+.myPageFeed li {
+    position: relative;
+}
+.myPageFeed li .overlay {
+    position: absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: all 0.25s ease;
+}
+.myPageFeed li:hover .overlay {
+    opacity: 0.5;
+}
+
+/* ==================== 마이페이지 End ==================== */
+
+/* ==================== 피드리스트 Start ==================== */
+.userFeedTitle {
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 40px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: black;
+}
+.dog_image {
+    height: 270px;
+    object-fit: cover;
+}
+
+/* ==================== 피드리스트 End ==================== */
+
+

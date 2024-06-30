@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/layout}">
+<div layout:fragment="content" class="main">
+    <div class="container">
+        <form class="col-auto join" method="post" th:action="@{/auth/join}" th:object="${joinDto}">
+            <div class="d-grid">
+                <h1 class="title">회원가입</h1>
+                <!-- 유저 아이디 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="userId" class="col-form-label">아이디</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="userId" id="userId" class="userId form-control" th:field="*{userId}"
+                                placeholder="아이디를 입력해주세요.">
+                        <div class="col-auto">
+                            <div class="availableId alert alert-success" id="availableId">사용가능한 아이디입니다.</div>
+                            <div class="inAvailableId alert alert-danger" id="inAvailableId">이미 사용중인 아이디입니다.</div>
+                            <p class="errors" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}"></p>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-dark" id="isDuplicatedId">중복확인</button>
+                    </div>
+                </div>
+                <!-- 비밀번호 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="password" class="col-form-label">비밀번호</label>
+                    </div>
+                    <div class="col-4 ">
+                        <input type="password" name="password" id="password" class="password form-control"
+                               placeholder="비밀번호를 입력해주세요.">
+                    </div>
+                </div>
+                <!-- 비밀번호 확인 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="passwordCheck" class="col-form-label">비밀번호 확인</label>
+                    </div>
+                    <div class="col-4 ">
+                        <input type="password" id="passwordCheck" class="passwordCheck form-control"
+                               placeholder="비밀번호를 입력해주세요.">
+                        <div class="col-auto">
+                            <div class="availablePwd alert alert-success" id="availablePwd">비밀번호가 일치합니다.</div>
+                            <div class="inAvailablePwd alert alert-danger" id="inAvailablePwd">비밀번호가 일치하지 않습니다.</div>
+                            <p class="errors" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 닉네임 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="nickname" class="col-form-label">닉네임</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="nickname" id="nickname" class="form-control" th:field="*{nickname}">
+                        <div class="col-auto">
+                            <p class="errors" th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" style=""></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 프로필 이미지
+                <div class="row d-flex g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label>프로필 이미지</label>
+                    </div>
+                    <div class="" id="userProfile">
+                        <img src="/images/noProfile.png" alt="">
+                    </div>
+                    <form method="post" enctype="multipart/form-data" id="profileImageForm" style="display: none">
+                        <label for="selectProfile"></label>
+                        <input th:type="file" name="profileImageUrl" id="selectProfile" style="display: none">
+                    </form>
+                </div>  -->
+                <!-- 우편 번호 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="postcode" class="col-form-label">우편번호</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="postcode" id="postcode" class="form-control"
+                               placeholder="ex) 06145">
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-dark" id="btnPostcode">우편번호 확인</button>
+                    </div>
+                </div>
+                <!-- 기본 주소 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="address" class="col-form-label">주소</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="address" id="address" class="form-control"
+                               placeholder="ex) 서울특별시 강남구 선릉로105길 3">
+                    </div>
+                </div>
+                <!-- 상세 주소 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="detailAddress" class="col-form-label">상세주소</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" name="detailAddress" id="detailAddress" class="form-control"
+                               placeholder="ex) 솜씨빌딩 3~6층">
+                    </div>
+                </div>
+                <!-- 견종 크기 체크박스 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        견종 크기
+                    </div>
+                    <div class="col-4">
+                        <div th:each="size : ${size}" class="form-check form-check-inline">
+                            <input type="checkbox" th:field="*{size}" th:value="${size.key}" class="form-check-input">
+                            <label th:for="${#ids.prev('size')}"
+                                   th:text="${size.value}" class="form-check-label">견종 크기</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- 이메일 -->
+                <div class="row g-3 align-items-start mb-4">
+                    <div class="col-2">
+                        <label for="email" class="col-form-label">이메일</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="email" name="email" id="email" class=" email form-control"
+                               placeholder="example@test.com">
+                        <div class="col-auto">
+                            <div class="availableEmail alert alert-success" id="availableEmail">사용가능한 이메일입니다.</div>
+                            <div class="inAvailableEmail alert alert-danger" id="inAvailableEmail">이미 사용중인 이메일입니다.</div>
+                            <p class="errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-dark" type="submit" id="isDuplicatedEmail">중복확인</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex mt-3">
+                <button class="btn btn-dark" id="btnJoin">가입하기</button>
+            </div>
+            <div class="col-auto">
+                <span id="messageConfirm"></span>
+            </div>
+        </form>
+    </div>
+    <script src="/js/join.js"></script>
+</div>
+</html>
