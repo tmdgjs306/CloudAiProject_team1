@@ -1,12 +1,12 @@
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View, Image} from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { Alert, Text, TextInput, TouchableOpacity, View, Image } from 'react-native';
+import React, { useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
-import { request, PERMISSIONS } from 'react-native-permissions';
-import {camera, imageLibrary} from '../api/ImagePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { ButtonGroup } from '@rneui/themed';
+import { camera, imageLibrary } from '../api/ImagePicker';
+import signPageLayout from '../styleSheet/signPageLayout';
+import {SERVER_ADDRESS} from "@env";
 
 const SignScreen = () => {
     const [email, setEmail] = useState('');
@@ -14,14 +14,15 @@ const SignScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [id, setId] = useState('');
+
     const navigation = useNavigation();
-    const auth = getAuth();
     const [photo, setPhoto] = useState('');
     const reduxUser = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [isVisible, setIsVisible] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(0); // New state for pet size selection
-    const petSizes = ['소', '중', '대'];
+    const [selectedIndex, setSelectedIndex] = useState(0);
+    const petSizes = ['SMALL', 'MEDIUM', 'LARGE'];
 
     const handleSignUp = async () => {
         if (password !== confirmPassword) {
@@ -33,23 +34,45 @@ const SignScreen = () => {
             );
             return;
         }
+
+        const joinDto = {
+            email: email,
+            password: password,
+            name: name,
+            address: address,
+            id: id,
+            petSize: petSizes[selectedIndex]
+        };
+
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-            await updateProfile(user, {
-                displayName: name,
-                photoURL: 'https://www.example.com/profile.png',
-                phoneNumber: phone,
+            const response = await fetch(SERVER_ADDRESS+`/app/joinApp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(joinDto)
             });
-            console.log(user);
-            Toast.show({
-                type: 'success',
-                text1: '회원가입 성공',
-                text2: `${email}으로 가입되었습니다.`
-            });
-            navigation.replace('Login');
+
+            if (response.ok) {
+                Toast.show({
+                    type: 'success',
+                    text1: '회원가입 성공',
+                    text2: `${email}으로 가입되었습니다.`
+                });
+                // firebase DB에 유저 정보 추가 
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                navigation.replace('Login');
+            } else {
+                const errorData = await response.json();
+                Alert.alert(
+                    "회원가입 실패",
+                    errorData.message || "알 수 없는 오류가 발생했습니다.",
+                    [{ text: '닫기' }],
+                    { cancelable: true }
+                );
+            }
         } catch (error) {
-            console.log(error.message);
+            console.error(error);
             Alert.alert(
                 "회원가입 도중에 문제가 발생했습니다.",
                 error.message,
@@ -60,41 +83,34 @@ const SignScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>회원가입</Text>
-            <View style={styles.profileContainer}>
-                <Image style={styles.profileImage} source={photo ? { uri: photo } : require("../../assets/images/sign_profile.png")} />
+        <View style={signPageLayout.container}>
+            <Text style={signPageLayout.title}>회원가입</Text>
+            <View style={signPageLayout.profileContainer}>
+                <Image style={signPageLayout.profileImage} source={photo ? { uri: photo } : require("../../assets/images/sign_profile.png")} />
                 <TouchableOpacity 
-                    style={styles.button}
+                    style={signPageLayout.button}
                     onPress={() => imageLibrary(setPhoto, setIsVisible)}
                 >
-                    <Text style={styles.buttonText}>사진변경</Text>
+                    <Text style={signPageLayout.buttonText}>사진변경</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.formContainer}>
+            <View style={signPageLayout.formContainer}>
                 <TextInput
-                    placeholder="이름"
+                    placeholder="닉네임"
                     placeholderTextColor="black"
                     value={name}
                     onChangeText={text => setName(text)}
-                    style={styles.input}
+                    style={signPageLayout.input}
                 />
                 <TextInput
-                    placeholder="주소"
+                    placeholder="사는 지역"
                     placeholderTextColor="black"
                     value={address}
                     onChangeText={text => setAddress(text)}
-                    style={styles.input}
+                    style={signPageLayout.input}
                 />
-                <TextInput
-                    placeholder="우편번호"
-                    placeholderTextColor="black"
-                    value={address}
-                    onChangeText={text => setAddress(text)}
-                    style={styles.input}
-                />
-                <View style={styles.radioContainer}>
-                    <Text style={styles.radioTitle}>반려동물 크기를 입력해주세요:</Text>
+                <View style={signPageLayout.radioContainer}>
+                    <Text style={signPageLayout.radioTitle}>반려동물 크기를 입력해주세요:</Text>
                     <ButtonGroup
                         onPress={(index) => setSelectedIndex(index)}
                         selectedIndex={selectedIndex}
@@ -108,14 +124,21 @@ const SignScreen = () => {
                     placeholderTextColor="black"
                     value={email}
                     onChangeText={text => setEmail(text)}
-                    style={styles.input}
+                    style={signPageLayout.input}
+                />
+                <TextInput
+                    placeholder = "아이디"
+                    placeholderTextColor="black"
+                    value = {id}
+                    onChangeText = {text => setId(text)}
+                    style = {signPageLayout.input}
                 />
                 <TextInput
                     placeholder="비밀번호"
                     placeholderTextColor="black"
                     value={password}
                     onChangeText={text => setPassword(text)}
-                    style={styles.input}
+                    style={signPageLayout.input}
                     secureTextEntry
                 />
                 <TextInput
@@ -123,16 +146,16 @@ const SignScreen = () => {
                     placeholderTextColor="black"
                     value={confirmPassword}
                     onChangeText={text => setConfirmPassword(text)}
-                    style={styles.input}
+                    style={signPageLayout.input}
                     secureTextEntry
                 />
             </View>
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.applyButton} onPress={handleSignUp}>
-                    <Text style={styles.applyButtonText}>회원가입</Text>
+            <View style={signPageLayout.buttonContainer}>
+                <TouchableOpacity style={signPageLayout.applyButton} onPress={handleSignUp}>
+                    <Text style={signPageLayout.applyButtonText}>회원가입</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.navigate("Login")}>
-                    <Text style={styles.cancelButtonText}>취소</Text>
+                <TouchableOpacity style={signPageLayout.cancelButton} onPress={() => navigation.navigate("Login")}>
+                    <Text style={signPageLayout.cancelButtonText}>취소</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -140,89 +163,3 @@ const SignScreen = () => {
 };
 
 export default SignScreen;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-        backgroundColor: '#F5F5F5',
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 20,
-        color: 'black'
-    },
-    profileContainer: {
-        alignItems: 'center',
-        marginBottom: 20
-    },
-    profileImage: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginBottom: 10
-    },
-    formContainer: {
-        marginBottom: 20
-    },
-    input: {
-        backgroundColor: 'white',
-        paddingHorizontal: 15,
-        paddingVertical: 10,
-        borderRadius: 10,
-        marginBottom: 10,
-        borderColor: '#DDD',
-        borderWidth: 1,
-        color: 'black',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    button: {
-        backgroundColor: '#50B4F5',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        alignItems: 'center'
-    },
-    buttonText: {
-        color: 'white',
-        fontWeight: '500'
-    },
-    applyButton: {
-        backgroundColor: '#50B4F5',
-        flex: 1,
-        marginRight: 10,
-        padding: 15,
-        borderRadius: 10,
-        alignItems: 'center'
-    },
-    cancelButton: {
-        backgroundColor: 'tomato',
-        flex: 1,
-        marginLeft: 10,
-        padding: 15,
-        borderRadius: 10,
-        alignItems: 'center'
-    },
-    applyButtonText: {
-        color: 'white',
-        fontWeight: '500'
-    },
-    cancelButtonText: {
-        color: 'white',
-        fontWeight: '500'
-    },
-    radioContainer: {
-        marginBottom: 20,
-    },
-    radioTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: 'black'
-    }
-});

@@ -47,7 +47,7 @@ export const camera = async (
   }
 };
 
-export const imageLibrary = async (
+export const imageLibrary = async (  
   setPhoto: React.Dispatch<React.SetStateAction<string | null>>, 
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<void> => {
@@ -69,3 +69,4 @@ export const imageLibrary = async (
     console.error("사진 라이브러리 실행 중 오류 발생: ", error);
   }
 };
+

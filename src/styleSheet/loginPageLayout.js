@@ -1,60 +1,60 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
-export const loginPageLayout = StyleSheet.create({
-    totalContainer:{
-        width: '100%',
-        height: '100%',
-    },
-    titleContainer:{
-        width: '100%',
-        height: '25%',
-        backgroundColor: '#ca8d60',
+const loginPageLayout = StyleSheet.create({
+    container: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'white'
     },
-    titleImage:{
-        width: '100%',
-        height: '70%',
+    logoImageContainer:{
         resizeMode: 'contain',
-        marginTop: 10,
+        paddingBottom: 30,
     },
-    title:{
-        color: 'white',
+    logo:{
+        width: 0,
+        height: 0,
+    },
+    logoText:{
+        color: 'black',
         fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 10
-    },
-    formContainer:{
-        backgroundColor: '#FFEAD0',
-        width:'100%',
-        height: '100%',
-        paddingTop: "20%",
-    },
-    form:{
-        alignItems: 'left',
-        backgroundColor: '#FDF5E6',
-        borderRadius: 30,
-        borderWidth: 0.1,
-        width: '100%',
-        height: '10%',
+        marginLeft: 20,
         marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingTop: 10,
-        paddingBottom: 10,
     },
-    submitBtn:{
+    inputContainer: {
+        width: '80%',
+        marginTop: 15,
+        color: 'black',
+    },
+    input: {
+        backgroundColor: '#E2E2E2',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderRadius: 10,
+        marginTop: 5,
+        color: 'black',
+        marginBottom: 10,
+    },
+    buttonContainer: {
+        width: '50%',
+        justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 30
+    },
+    button: {
+        backgroundColor: 'black',
         width: '100%',
-        height: '10%',
-        backgroundColor: '#FADCA5',
-        paddingTop: 20,
-        paddingBottom: 20,
-        borderRadius: 30,
-        borderWidth: 0.1,
-        marginTop: 30,
-        borderColor: '#FADCA5',
-        borderWidth: 0.1,
-    }
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    buttonText:{
+        color: 'white',
+        fontWeight: '500',
+        fontSize: 16,
+    },
 });
+
+export default loginPageLayout;

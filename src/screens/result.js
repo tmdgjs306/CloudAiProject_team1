@@ -1,45 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, ActivityIndicator, TouchableOpacity} from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, StyleSheet, ScrollView, TextInput } from 'react-native';
 import axios from 'axios';
-import { resultPageLayout } from '../styleSheet/resultPageLayout';
 import { useNavigation } from '@react-navigation/native';
-{/*
-  * Author: Han_Seung_Heon,
-  * Function: AI 서버로 부터 판독 결과를 가져와 보여주는 페이지 
-  * Date: 2024.06.15
-  * ※ 현재 AI 서버 미구현으로 일부 기능만 동작 
-  */}
+import { SafeAreaView } from 'react-native-safe-area-context';
+import {SERVER_ADDRESS} from "@env";
 
 const Result = ({ route }) => {
   const { photo } = route.params;
   const [analysisResult, setAnalysisResult] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dogAge, setDogAge] = useState('');
+  const [additionalInfo, setAdditionalInfo] = useState(null);
+  const [showAgeInput, setShowAgeInput] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchAnalysisResult = async () => {
       try {
-
-        // 사진 전송 양식 저장 ※ 현재는 AI 서버가 미구현 되어 사용 하지 않음 
         const formData = new FormData();
-        formData.append('photo', {
+        formData.append('file', {
           uri: photo,
           type: 'image/jpeg',
           name: 'photo.jpg',
         });
-        
-        //AXIOS 테스트 코드 JSONplaceHolder 사이트를 이용하여 AXIOS 기능이 정상적으로 작동하는지 확인한다.  
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts/1',{
-        }).then(response => setAnalysisResult(response.data));
 
-        // 실제 AI 서버와 통신하여 데이터를 받아오는 코드 [현재 AI 서버 미구현으로 작동하지 않는다.]
-        // const response = await axios.post('https://example.com/api/analyze', formData, {
-        //     headers: {
-        //       'Content-Type': 'multipart/form-data',
-        //     },
-        //   });
-        //   setAnalysisResult(response.data);
-
+        const response = await axios.post(SERVER_ADDRESS+`/app/getPredictData`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        console.log('Received analysis result:', response.data);
+        setAnalysisResult(response.data);
       } catch (error) {
         console.error('Error fetching analysis result:', error);
       } finally {
@@ -50,41 +41,243 @@ const Result = ({ route }) => {
     fetchAnalysisResult();
   }, [photo]);
 
+  const handleGetMoreInfo = async () => {
+    if (!dogAge) {
+      alert('나이를 입력해주세요.');
+      return;
+    }
+
+    try {
+      const maxResult = getMaxValueResult(analysisResult);
+      const response = await axios.get('http://localhost:8190/app/getMoreInfo', {
+        params: {
+          dog_id: maxResult.dog_id,
+          dog_age: dogAge,
+        },
+      });
+      console.log('Received additional info:', response.data);
+      setAdditionalInfo(response.data);
+      setShowAgeInput(false); // 추가 정보를 가져온 후 나이 입력 부분 숨기기
+    } catch (error) {
+      console.error('Error fetching additional info:', error);
+    }
+  };
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  const getMaxValueResult = (result) => {
+    let maxValue = -Infinity;
+    let maxValueKey = null;
+
+    Object.keys(result).forEach((key) => {
+      if (key.startsWith('class_') && result[key][0]?.value > maxValue) {
+        maxValue = result[key][0].value;
+        maxValueKey = key;
+      }
+    });
+
+    return maxValueKey ? result[maxValueKey][0] : null;
+  };
+
+  const decodeUnicode = (str) => {
+    if (str === undefined || str === null) {
+      return ''; // 또는 적절한 기본값으로 대체할 수 있습니다.
+    }
+    return decodeURIComponent(JSON.parse(`"${str.replace(/\"/g, '\\"')}"`));
+  };
+
   if (loading) {
     return (
-      <View style={resultPageLayout.loading}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>사진을 전송중입니다...</Text>
+      <View style={styles.loading}>
+        <ActivityIndicator size="large" color="#6200ea" />
+        <Text style={styles.loadingText}>사진을 전송중입니다...</Text>
       </View>
     );
   }
-  const handleGoBack = () =>{
-    navigation.goBack();
-  }
-  return (
-    <View style={resultPageLayout.container}>
-      <View style={resultPageLayout.titleContainer}>
-        <Text style={resultPageLayout.title}>결과페이지</Text>
-      </View>
-      <Image source={{ uri: photo }} style={resultPageLayout.photo} />
-      {analysisResult && (
-        <View style={resultPageLayout.resultContainer}>
-          {/*인공지능 서버에서 받아온 데이터를 보여주는 부분[현재는 작동하지 않는다.]*/}
-          {/* <Text style={resultPageLayout.resultText}>분류: {analysisResult.classification_name}</Text>
-          <Text style={resultPageLayout.resultText}>기본 정보: {analysisResult.Information_default}</Text>
-          <Text style={resultPageLayout.resultText}>추가 정보: {analysisResult.Information}</Text> */}
 
-          {/*Axios 테스트를 위해 임시로 작성한 부분 현재는 JsonPlaceHolder 사이트에서 데이터를 가져와 보여준다.*/}
-          <Text style={resultPageLayout.resultText}>ID: {analysisResult.userId}</Text>
-          <Text style={resultPageLayout.resultText}>id: {analysisResult.id}</Text>
-          <Text style={resultPageLayout.resultText}>title: {analysisResult.title}</Text>
-          <TouchableOpacity onPress={handleGoBack}>
-            <Text style={{color:'black', fontSize:20}}>뒤로가기</Text>
-          </TouchableOpacity>
+  const maxResult = analysisResult ? getMaxValueResult(analysisResult) : null;
+
+  return (
+    <ScrollView>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>분석결과</Text>
         </View>
-      )}
-    </View>
+        <Image source={{ uri: photo }} style={styles.photo} />
+        {maxResult && (
+          <View style={styles.resultContainer}>
+            <Text style={styles.resultLabel}>품종</Text>
+            <Text style={styles.resultText}>{maxResult.name || '정보 없음'}</Text>
+            <Text style={styles.resultLabel}>정보</Text>
+            <Text style={styles.resultText}>{maxResult.general_info || '정보 없음'}</Text>
+            <Text style={styles.resultLabel}>함께 키우면 좋은 견종</Text>
+            {maxResult.friend_info?.map((friend, index) => (
+              <Text key={index} style={styles.resultText}>
+                {friend.name}: {friend.value}
+              </Text>
+            )) || <Text style={styles.resultText}>정보 없음</Text>}
+            <Text style={styles.resultLabel}>훈련정보</Text>
+            <Text style={styles.resultText}>{maxResult.training_info || '정보 없음'}</Text>
+          </View>
+        )}
+        {!showAgeInput && !additionalInfo && (
+          <TouchableOpacity style={styles.submitBtn} onPress={() => setShowAgeInput(true)}>
+            <Text style={styles.buttonText}>추가 정보 입력하고 더 많은 정보 얻기</Text>
+          </TouchableOpacity>
+        )}
+        {showAgeInput && (
+          <View style={styles.ageInputContainer}>
+            <TextInput
+              style={styles.ageInput}
+              placeholder="강아지 나이 입력"
+              placeholderTextColor="black"
+              color="black"
+              keyboardType="numeric"
+              value={dogAge}
+              onChangeText={setDogAge}
+            />
+            <TouchableOpacity style={styles.submitBtn} onPress={handleGetMoreInfo}>
+              <Text style={styles.buttonText}>제출</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {additionalInfo && (
+          <View style={styles.additionalInfoContainer}>
+            <Text style={styles.additionalInfoTitle}>추가 정보</Text>
+            {additionalInfo[0]?.health_info?.map((info, index) => (
+              <View key={index} style={styles.additionalInfoItem}>
+                <Text style={styles.resultLabel}>{decodeUnicode(info['병명'])}</Text>
+                <Text style={styles.resultText}>{decodeUnicode(info['설명'])}</Text>
+                <Text style={styles.resultText}>{decodeUnicode(info['예방 및 관리'])}</Text>
+                <Text style={styles.resultText}>{decodeUnicode(info['증상'])}</Text>
+              </View>
+            ))}
+            <Text style={styles.resultText}>생활 단계: {decodeUnicode(additionalInfo[0]?.lifecycle_state) || '정보 없음'}</Text>
+          </View>
+        )}
+        <TouchableOpacity style={styles.backBtn} onPress={handleGoBack}>
+          <Text style={styles.buttonText}>뒤로가기</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    padding: 20,
+  },
+  titleContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  photo: {
+    width: '100%',
+    height: 400,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  resultContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
+    marginBottom: 20,
+  },
+  resultLabel: {
+    fontSize: 18,
+    color: '#6200ea',
+    marginBottom: 10,
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
+  resultText: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 20,
+    textAlign: 'left',
+    lineHeight: 24,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#333',
+  },
+  backBtn: {
+    marginTop: 20,
+    backgroundColor: 'tomato',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  submitBtn: {
+    marginTop: 20,
+    backgroundColor: 'skyblue',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  ageInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  ageInput: {
+    flex: 1,
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginRight: 10,
+    paddingHorizontal: 10,
+  },
+  additionalInfoContainer: {
+    marginTop: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 5,
+    elevation: 3,
+    marginBottom: 20,
+  },
+  additionalInfoTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#6200ea',
+  },
+  additionalInfoItem: {
+    marginBottom: 10,
+  },
+});
 
 export default Result;

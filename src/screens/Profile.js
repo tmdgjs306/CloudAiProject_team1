@@ -1,103 +1,124 @@
-import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { getAuth, signOut } from 'firebase/auth';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import Certification from '../components/Certification'
-import {camera, imageLibrary} from '../api/ImagePicker';
-import { useState } from 'react';
+import Certification from '../components/Certification';
+import { imageLibrary } from '../api/ImagePicker';
 import imageUpload from '../api/imageUpload';
+import profileLayout from '../styleSheet/profileLayout'; // 스타일 파일 임포트
+import axios from 'axios';
+import {SERVER_ADDRESS} from "@env";
 
-
-const Profile = () => {
+const Profile = ({ onProfileImageChange }) => {
   const navigation = useNavigation();
   const auth = getAuth();
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleSignOut = async () => {
     try {
-      await signOut(auth); // firebase 토큰 삭제 
-      dispatch({
-        type: 'DELETE_USER', // redux 저장소에 저장된 유저 정보 삭제 
-      });
-      navigation.replace('Login'); // 로그인 화면으로 이동 
+      await signOut(auth);
+      dispatch({ type: 'DELETE_USER' });
+      navigation.replace('Login');
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleProfileImgChange = async () => {
-    console.log("이미지 변경 함수 호출됨!");
-    /* 이미지 업로드 api를 호출하여 이미지 업로드를 처리한다.
-     * 기존 프로필 이미지를 삭제하고 새로운 이미지를 올리므로 이미지 주소는 변경되지 않는다.
-     */
-    const result = imageUpload(photo,'testUid');
-    console.log(result);
+    await imageLibrary(setPhoto, setIsVisible); // 이미지 라이브러리에서 이미지 선택
   };
-  return (
-    <View style={styles.container}>
-      {user.isLogin ? (
-        <>
-          {user.imgUrl !='' ?(
-            <TouchableOpacity
-              style = {styles.profileImage}
-              onPress = {handleProfileImgChange}  
-            >
-            <Image source={{ uri: user.imgUrl }} style={styles.profileImage}/> 
-            </TouchableOpacity>
-          ):
-             <TouchableOpacity
-             style = {styles.profileImage}
-             onPress = {handleProfileImgChange}  
-             >
-              <Image source={ require('../../assets/images/sign_profile.png')} style={styles.profileImage}/> 
-            </TouchableOpacity>
+
+  useEffect(() => {
+    const uploadPhoto = async () => {
+      if (photo) {
+        let result = "";
+        if (!photo) {
+          Alert.alert("이미지를 선택하세요.");
+          return;
+        }
+        result = await imageUpload(photo);
+        if (!result) {
+          Alert.alert("이미지 업로드 중 오류가 발생했습니다.");
+          return;
+        }
+        const serverUrl = SERVER_ADDRESS+`/app/profileImageChange`;
+        console.log(result);
+        const postData = {
+          imgUrl: result,
+          id: user.id,
+        };
+
+        try {
+          const response = await axios.post(serverUrl, postData, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.status === 200) {
+            console.log("프로필 이미지가 성공적으로 변경되었습니다.", response.data);
+            Alert.alert("프로필 이미지가 변경되었습니다.");
+            dispatch({ type: 'MODIFY_IMAGE', profileImageUrl: result });
+            setPhoto(null);
+            onProfileImageChange(); // 프로필 이미지 변경 후 콜백 호출
+            navigation.navigate("Feed");
+          } else {
+            Alert.alert("프로필 이미지 변경 중 오류가 발생했습니다.");
           }
-          <Text style={styles.nameText}>{user.name}</Text>
-          <Text style={styles.emailText}>{user.email}</Text>
-          <Text style={styles.phoneText}>{user.phoneNumber}</Text>
-          <Button title="로그아웃" onPress={handleSignOut} />
-        </>
-      ) :
-        <>
-        <Certification/>
-        </>
+        } catch (error) {
+          console.error("프로필 이미지 변경 중 오류가 발생했습니다.", error);
+          Alert.alert("프로필 이미지 변경 중 오류가 발생했습니다.");
+        }
       }
+    };
+    uploadPhoto();
+  }, [photo]);
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log('Profile screen focused');
+    }, [])
+  );
+
+  const profileImageSource = user.profileImageUrl ? { uri: user.profileImageUrl } : require('../../assets/images/sign_profile.png');
+
+  return (
+    <View style={profileLayout.container}>
+      <View style={profileLayout.profileHeader}>
+        <Image source={profileImageSource} style={profileLayout.profileImage} />
+        <View style={profileLayout.userInfo}>
+          <Text style={profileLayout.username}>{user.nickname}</Text>
+          <Text style={profileLayout.userEmail}>{user.email}</Text>
+        </View>
+      </View>
+
+      <View style={profileLayout.statsContainer}>
+        <TouchableOpacity style={profileLayout.statItem}>
+          <Text style={profileLayout.statNumber}>{user.posts}</Text>
+          <Text style={profileLayout.statLabel}>게시물</Text>
+        </TouchableOpacity>
+      
+        <TouchableOpacity style={profileLayout.statItem}>
+          <Text style={profileLayout.statNumber}>{user.followers}</Text>
+          <Text style={profileLayout.statLabel}>팔로워</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={profileLayout.statItem}>
+          <Text style={profileLayout.statNumber}>{user.following}</Text>
+          <Text style={profileLayout.statLabel}>팔로잉</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity 
+        style={profileLayout.editProfileButton}
+        onPress={handleProfileImgChange}
+      >
+        <Text style={profileLayout.editProfileButtonText}>프로필 이미지 수정</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
-    padding: 20,
-  },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
-  },
-  nameText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: 'black',
-  },
-  emailText: {
-    fontSize: 18,
-    color: 'gray',
-    marginBottom: 5,
-  },
-  phoneText: {
-    fontSize: 18,
-    color: 'gray',
-    marginBottom: 20,
-  },
-});

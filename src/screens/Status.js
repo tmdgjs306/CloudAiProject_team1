@@ -1,7 +1,8 @@
-import { View, Text, SafeAreaView, TouchableOpacity, StatusBar, Image, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, StatusBar, Image, Dimensions } from 'react-native';
 import React from 'react';
 import Ionic from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
+import statusPageLayout from '../styleSheet/statusPageLayout';
 
 const { width, height } = Dimensions.get('window'); // 현재 화면의 너비와 높이를 가져옵니다.
 {/*
@@ -15,80 +16,29 @@ const Status = ({ route, navigation }) => {
   const nav = useNavigation();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={statusPageLayout.container}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
 
       {/* 상단 디자인 */}
-      <View style={styles.headerContainer}>
-        <View style={styles.profileImageContainer}>
+      <View style={statusPageLayout.headerContainer}>
+        <View style={statusPageLayout.profileImageContainer}>
           {/* 프로필 이미지 */}
-          <Image source={image} style={styles.profileImage} />
+          <Image source={image} style={statusPageLayout.profileImage} />
         </View>
 
         {/* 이름 및 취소 버튼 */}
-        <View style={styles.headerRightContainer}>
-          <Text style={styles.nameText}>{name}</Text>
+        <View style={statusPageLayout.headerRightContainer}>
+          <Text style={statusPageLayout.nameText}>{name}</Text>
           <TouchableOpacity onPress={() => nav.goBack()}>
-            <Ionic name="close" style={styles.closeIcon} />
+            <Ionic name="close" style={statusPageLayout.closeIcon} />
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Story Image */}
-      <Image source={image} style={styles.storyImage} />
+      <Image source={image} style={statusPageLayout.storyImage} />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'black',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    position: 'absolute',
-    top: '5%',
-    left: '2.5%',
-    width: '95%',
-  },
-  profileImageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: width * 0.1,
-    height: width * 0.1,
-  },
-  profileImage: {
-    borderRadius: width * 0.1 / 2,
-    backgroundColor: 'orange',
-    width: '92%',
-    height: '92%',
-    resizeMode: 'cover',
-  },
-  headerRightContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    width: '92%',
-    alignItems: 'center',
-  },
-  nameText: {
-    color: 'white',
-    fontSize: width * 0.05,
-    paddingLeft: '3%',
-  },
-  closeIcon: {
-    color: 'white',
-    opacity: 0.6,
-    fontSize: width * 0.07,
-  },
-  storyImage: {
-    position: 'absolute',
-    width: '100%',
-    height: '80%',
-  },
-});
 
 export default Status;
