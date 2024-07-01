@@ -40,7 +40,7 @@ def get_dog_info_by_id(connection, dog_id):
         cursor.execute(query)
         result = cursor.fetchall()
         print("Query executed successfully")
-        print(result)
+        cursor.close()
         return result
     except Error as e:
         print(f"The error '{e}' occurred")

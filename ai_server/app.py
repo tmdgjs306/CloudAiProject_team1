@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, g
-from model import custom_load_model, get_labels
+from model import custom_load_model
 from image_processing import verify_image, preprocess_image
 from predictions import filtered_predictions
 from tensorflow.keras.applications.vgg16 import preprocess_input # type: ignore
@@ -9,9 +9,9 @@ app = Flask(__name__)
 
 # 모델 Load
 model = custom_load_model()
-labels = get_labels()
 preprocess_input = preprocess_input
 
+# request를 처리하는 동안만 DB와 연결
 @app.before_request
 def before_request():
     g.connection = create_connection()
@@ -24,6 +24,7 @@ def after_request(response):
     print("Database connection closed")
     return response
 
+# 이미지를 통해 견종 추론 & 기본 정보 반환
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -37,7 +38,8 @@ def predict():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
+# 견종과 나이를 받아 건강 정보를 반환 
 @app.route('/health', methods=['GET'])
 def get_health_info():
     try:
