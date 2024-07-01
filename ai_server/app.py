@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, g
 from model import custom_load_model
-from image_processing import verify_image, preprocess_image
+from image_processing import verify_image, preprocess_image, crop_largest_dog_from_img
 from predictions import filtered_predictions
 from tensorflow.keras.applications.vgg16 import preprocess_input # type: ignore
 from db import create_connection, get_dog_lifecycle_stages_id_by_breed_age, get_dog_info_by_breed_lifecycle_stage
@@ -24,6 +24,11 @@ def after_request(response):
     print("Database connection closed")
     return response
 
+# ping-pong
+@app.route('/ping')
+def send_pong():
+    return 'pong'
+
 # 이미지를 통해 견종 추론 & 기본 정보 반환
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -31,7 +36,8 @@ def predict():
         data = request.json
         image_url = data.get('image_url')
         img = verify_image(image_url)
-        img_arr = preprocess_image(img) 
+        croped_img = crop_largest_dog_from_img(img)
+        img_arr = preprocess_image(croped_img) 
         pred = model.predict(img_arr)
         result = filtered_predictions(g.connection, pred)
         return jsonify(result)
@@ -60,4 +66,4 @@ def get_health_info():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5500, debug=True)
+    app.run(host='0.0.0.0', port=5500)
