@@ -1,6 +1,12 @@
 ## **부멍님이누구니?**
-강아지 양육정보 제공 프로젝트 
+강아지 양육정보 제공 프로젝트
+
+[시스템 아키텍처]
+![KakaoTalk_20240701_222510952](https://github.com/tmdgjs306/FindBoomung/assets/58868717/ab9dd159-e339-4d35-b3d7-251f4d00d09a)
+
+[메인페이지]
 ![메인페이지](https://github.com/tmdgjs306/CloudAiProject_team1/assets/58868717/366d8900-df2c-4027-a180-224eaae187f0)
+
 ##  ✅ 프로젝트 진행 기간   
 2024.05.13(월)~2024.06.28(금)
 
