@@ -1,7 +1,7 @@
 ## **부멍님이누구니?**
 강아지 양육정보 제공 프로젝트
 
-[시스템 아키텍처]
+[시스템 아키텍처
 ![KakaoTalk_20240701_222510952](https://github.com/tmdgjs306/FindBoomung/assets/58868717/ab9dd159-e339-4d35-b3d7-251f4d00d09a)
 
 [메인페이지]
